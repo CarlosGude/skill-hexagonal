@@ -8,19 +8,22 @@ use App\Domain\Entity\AbstractEntity;
 abstract class AbstractDataTransformer
 {
     /**
-     * @param array<int, AbstractEntity>|AbstractEntity|null $data
+     * @param AbstractEntity $data
      *
-     * @return array<int, DtoInterface>|DtoInterface|null
+     * @return DtoInterface
      */
-    public function transform(null|array|AbstractEntity $data): null|array|DtoInterface
+    public function transformFromEntity(AbstractEntity $data): DtoInterface
     {
-        if (!$data) {
-            return null;
-        }
+        return $this->getDto($data);
+    }
 
-        if (!is_array($data)) {
-            return $this->getDto($data);
-        }
+    /**
+     * @param array<int,AbstractEntity> $data
+     * @return array<int,DtoInterface>
+     *
+     */
+    public function transformArray(array $data): array
+    {
 
         $bachResponse = [];
         foreach ($data as $item) {
@@ -29,6 +32,8 @@ abstract class AbstractDataTransformer
 
         return $bachResponse;
     }
+
+
 
     abstract protected function getDto(AbstractEntity $data): DtoInterface;
 }

@@ -4,10 +4,11 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\AbstractEntity;
 use App\Domain\Entity\Article;
+use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class ArticleRepository extends ServiceEntityRepository
+class MySQLArticleRepository extends ServiceEntityRepository implements ArticleRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -40,7 +41,7 @@ class ArticleRepository extends ServiceEntityRepository
         return $this->getEntityManager()->getRepository(Article::class)->findAll();
     }
 
-    public function getOne(string $uuid): ?AbstractEntity
+    public function getOne(string $uuid): ?Article
     {
         return $this->getEntityManager()->getRepository(Article::class)->findOneBy(['uuid' => $uuid]);
     }

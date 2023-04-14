@@ -7,7 +7,7 @@ use App\Application\Authors\Dto\AuthorDto;
 use App\Application\Authors\UseCase\AuthorsUseCase;
 use App\Domain\Entity\Author;
 use App\Infrastructure\Dto\ResponseDto;
-use App\Infrastructure\Repository\AuthorRepository;
+use App\Infrastructure\Repository\MySQLAuthorRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class AuthorGetTest extends KernelTestCase
@@ -36,7 +36,7 @@ class AuthorGetTest extends KernelTestCase
     protected function setUp(): void
     {
         $this->authors = $this->generateMockUsers();
-        $userRepositoryMock = $this->createMock(AuthorRepository::class);
+        $userRepositoryMock = $this->createMock(MySQLAuthorRepository::class);
 
         // Mocks an array of user Response
         $userRepositoryMock->expects($this->any())->method('getAll')->willReturn($this->authors);
@@ -49,7 +49,7 @@ class AuthorGetTest extends KernelTestCase
             });
 
         $this->authorsGetUseCase = new AuthorsUseCase(
-            userRepository: $userRepositoryMock,
+            authorRepository: $userRepositoryMock,
             transformer: new AuthorDataTransformer()
         );
     }

@@ -2,26 +2,47 @@
 
 namespace App\Application\Authors\UseCase;
 
+use App\Application\Abstracts\Interfaces\DtoInterface;
 use App\Application\Authors\DataTransformer\AuthorDataTransformer;
+use App\Application\Authors\Dto\AuthorDto;
+use App\Application\Exceptions\AuthorNotFoundException;
+use App\Domain\Entity\Author;
 use App\Infrastructure\Dto\ResponseDto;
 use App\Infrastructure\Http\HttpCode;
-use App\Infrastructure\Repository\AuthorRepository;
+use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
+use App\Infrastructure\Interfaces\AuthorRepositoryInterface;
+use App\Infrastructure\Repository\MySQLAuthorRepository;
 
 final class AuthorsUseCase
 {
     public function __construct(
-        protected readonly AuthorRepository $userRepository,
-        protected readonly AuthorDataTransformer $transformer
+        protected readonly AuthorRepositoryInterface $authorRepository,
+        protected readonly AuthorDataTransformer     $transformer
     ) {
     }
 
-    public function get(?string $uuid = null): ResponseDto
+    /**
+     * @return array<int, DtoInterface>
+     */
+    public function getAll(): array
     {
-        $data = $uuid ? $this->userRepository->getOne($uuid) : $this->userRepository->getAll();
+        $data = $this->authorRepository->getAll();
+        if (empty($data)){
+            throw new AuthorNotFoundException();
+        }
 
-        return new ResponseDto(
-            content: $this->transformer->transform($data),
-            code: empty($data) ? HttpCode::HTTP_NOT_FOUND : HttpCode::HTTP_OK
-        );
+        return $this->transformer->transformArray($data);
+    }
+
+    public function get(string $uuid): DtoInterface
+    {
+        /** @var Author $data */
+        $data = $this->authorRepository->getOne($uuid);
+
+        if (!$data instanceof Author){
+            throw new AuthorNotFoundException();
+        }
+
+        return $this->transformer->transformFromEntity($data);
     }
 }

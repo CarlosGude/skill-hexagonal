@@ -22,7 +22,7 @@ class ArticleDataTransformer extends AbstractDataTransformer
     protected function getDto(AbstractEntity $data): DtoInterface
     {
         /** @var AuthorDto $authorDto */
-        $authorDto = $this->authorDataTransformer->transform($data->getAuthor());
+        $authorDto = $this->authorDataTransformer->transformFromEntity($data->getAuthor());
 
         return new ArticleDto(
             uuid: $data->getUuid(),

@@ -8,7 +8,7 @@ use App\Application\Articles\UseCase\ArticleUseCase;
 use App\Application\Authors\DataTransformer\AuthorDataTransformer;
 use App\Domain\Entity\Article;
 use App\Infrastructure\Dto\ResponseDto;
-use App\Infrastructure\Repository\ArticleRepository;
+use App\Infrastructure\Repository\MySQLArticleRepository;
 use App\Tests\Unitary\Author\AuthorGetTest;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -40,7 +40,7 @@ class ArticleGetTest extends KernelTestCase
     protected function setUp(): void
     {
         $this->articles = $this->generateMockArticles();
-        $articleRepositoryMock = $this->createMock(ArticleRepository::class);
+        $articleRepositoryMock = $this->createMock(MySQLArticleRepository::class);
 
         // Mocks an array of user Response
         $articleRepositoryMock->expects($this->any())->method('getAll')->willReturn($this->articles);

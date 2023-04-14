@@ -18,6 +18,12 @@ services:
         exclude:
             - '../src/Domain/Entity/'
             - '../src/Kernel.php'
+    App\Application\Articles\UseCase\ArticleUseCase:
+        arguments:
+            - $articleRepository: '@App\Infrastructure\Repository\MySQLArticleRepository'
 
+    App\Application\Articles\UseCase\AuthorUseCase:
+        arguments:
+            - $authorRepository: '@App\Infrastructure\Repository\MySQLAuthorRepository'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

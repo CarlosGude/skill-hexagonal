@@ -4,10 +4,12 @@ namespace App\Infrastructure\Http\Authors;
 
 use App\Application\Authors\Dto\AuthorDto;
 use App\Application\Authors\UseCase\AuthorsUseCase;
+use App\Application\Exceptions\AuthorNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(name: 'authors_')]
@@ -37,9 +39,13 @@ class GetController extends AbstractController
     #[Route('api/authors', name: 'get_entity', methods: ['GET'])]
     public function get(): JsonResponse
     {
-        $response = $this->authorsGetUseCase->get();
+        try {
+            $data = $this->authorsGetUseCase->getAll();
+        }catch (AuthorNotFoundException $exception){
+            throw new NotFoundHttpException($exception->getMessage());
+        }
 
-        return $this->json($response->getContent(), $response->getCode());
+        return $this->json($data);
     }
 
     /**
@@ -70,8 +76,11 @@ class GetController extends AbstractController
     #[Route('api/authors/{uuid}', name: 'get_entity_one', methods: ['GET'])]
     public function getOne(string $uuid): JsonResponse
     {
-        $response = $this->authorsGetUseCase->get($uuid);
-
-        return $this->json($response->getContent(), $response->getCode());
+        try {
+            $data = $this->authorsGetUseCase->get($uuid);
+        }catch (AuthorNotFoundException $exception){
+            throw new NotFoundHttpException($exception->getMessage());
+        }
+        return $this->json($data);
     }
 }

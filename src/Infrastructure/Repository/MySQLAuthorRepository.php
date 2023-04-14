@@ -4,10 +4,11 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\AbstractEntity;
 use App\Domain\Entity\Author;
+use App\Infrastructure\Interfaces\AuthorRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class AuthorRepository extends ServiceEntityRepository
+class MySQLAuthorRepository extends ServiceEntityRepository implements AuthorRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -40,7 +41,7 @@ class AuthorRepository extends ServiceEntityRepository
         return $this->getEntityManager()->getRepository(Author::class)->findAll();
     }
 
-    public function getOne(string $uuid): ?AbstractEntity
+    public function getOne(string $uuid): ?Author
     {
         return $this->getEntityManager()->getRepository(Author::class)->findOneBy(['uuid' => $uuid]);
     }

@@ -4,10 +4,12 @@ namespace App\Infrastructure\Http\Articles;
 
 use App\Application\Articles\Dto\ArticleDto;
 use App\Application\Articles\UseCase\ArticleUseCase;
+use App\Application\Exceptions\ArticleNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(name: 'articles_')]
@@ -37,9 +39,13 @@ class GetController extends AbstractController
     #[Route('api/articles', name: 'get_entity', methods: ['GET'])]
     public function get(): JsonResponse
     {
-        $response = $this->articleUseCase->get();
+        try {
+            $data = $this->articleUseCase->getAll();
+        }catch (ArticleNotFoundException $exception){
+            throw new NotFoundHttpException($exception->getMessage());
+        }
 
-        return $this->json($response->getContent(), $response->getCode());
+        return $this->json($data);
     }
 
     /**
@@ -70,8 +76,12 @@ class GetController extends AbstractController
     #[Route('api/authors/{uuid}', name: 'get_entity_one', methods: ['GET'])]
     public function getOne(string $uuid): JsonResponse
     {
-        $response = $this->articleUseCase->get($uuid);
+        try {
+            $data = $this->articleUseCase->get($uuid);
+        }catch (ArticleNotFoundException $exception){
+            throw new NotFoundHttpException($exception->getMessage());
+        }
 
-        return $this->json($response->getContent(), $response->getCode());
+        return $this->json($data);
     }
 }
