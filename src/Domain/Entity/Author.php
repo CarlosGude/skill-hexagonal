@@ -60,20 +60,18 @@ class Author extends AbstractEntity
 
     /**
      * @param array<int,Article> $articles
+     *
      * @return $this
      */
     public function setArticles(array $articles): Author
     {
-        foreach ($articles as $article){
+        foreach ($articles as $article) {
             $this->articles->add($article);
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection
-     */
     public function getArticles(): Collection
     {
         return $this->articles;

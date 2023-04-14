@@ -17,6 +17,7 @@ class AuthorDataTransformer extends AbstractDataTransformer
     {
         /** @var array<int,Article> $articles */
         $articles = $data->getArticles()->toArray();
+
         return new AuthorDto(
             uuid: $data->getUuid(),
             name: $data->getName(),

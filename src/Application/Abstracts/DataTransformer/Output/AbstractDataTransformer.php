@@ -2,7 +2,6 @@
 
 namespace App\Application\Abstracts\DataTransformer\Output;
 
-
 use App\Application\Abstracts\Interfaces\Input\DtoInterface;
 use App\Domain\Entity\AbstractEntity;
 

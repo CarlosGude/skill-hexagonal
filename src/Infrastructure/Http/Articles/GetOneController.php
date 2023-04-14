@@ -13,32 +13,27 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(name: 'articles_')]
-class GetController extends AbstractController
+class GetOneController extends AbstractController
 {
     public function __construct(protected readonly GetArticleUseCase $articleUseCase)
     {
     }
-
     /**
      * @OA\Get(
      *
      * @OA\Response(
      *     response=200,
-     *     description="List of Articles",
+     *     description="Detail of an Article",
      *
-     *     @OA\JsonContent(
-     *        type="array",
-     *
-     *        @OA\Items(ref=@Model(type=ArticleDto::class))
-     *     )
+     *     @Model(type=ArticleDto::class)
      * )
      * )
      */
-    #[Route('api/articles', name: 'get_entity', methods: ['GET'])]
-    public function get(): JsonResponse
+    #[Route('api/articles/{uuid}', name: 'get_entity_one', methods: ['GET'])]
+    public function getOne(string $uuid): JsonResponse
     {
         try {
-            $data = $this->articleUseCase->getAll();
+            $data = $this->articleUseCase->get($uuid);
         } catch (ArticleNotFoundException $exception) {
             throw new NotFoundHttpException($exception->getMessage());
         }

@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(name: 'authors_')]
-class GetController extends AbstractController
+class GetOneController extends AbstractController
 {
     public function __construct(protected readonly GetAuthorsUseCase $authorsGetUseCase)
     {
@@ -24,21 +24,17 @@ class GetController extends AbstractController
      *
      * @OA\Response(
      *     response=200,
-     *     description="List of Authors",
+     *     description="Detail of an Author",
      *
-     *     @OA\JsonContent(
-     *        type="array",
-     *
-     *        @OA\Items(ref=@Model(type=AuthorDto::class))
-     *     )
+     *     @Model(type=AuthorDto::class)
      * )
      * )
      */
-    #[Route('api/authors', name: 'get_entity', methods: ['GET'])]
-    public function get(): JsonResponse
+    #[Route('api/authors/{uuid}', name: 'get_entity_one', methods: ['GET'])]
+    public function getOne(string $uuid): JsonResponse
     {
         try {
-            $data = $this->authorsGetUseCase->getAll();
+            $data = $this->authorsGetUseCase->get($uuid);
         } catch (AuthorNotFoundException $exception) {
             throw new NotFoundHttpException($exception->getMessage());
         }

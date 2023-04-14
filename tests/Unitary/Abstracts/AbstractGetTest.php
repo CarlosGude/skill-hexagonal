@@ -1,6 +1,6 @@
 <?php
 
-namespace Unitary\Abstracts;
+namespace App\Tests\Unitary\Abstracts;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
