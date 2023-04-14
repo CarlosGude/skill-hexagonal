@@ -54,6 +54,9 @@ class AuthorGetTest extends KernelTestCase
         );
     }
 
+    /**
+     * @throws AuthorNotFoundException
+     */
     public function testGet(): void
     {
         $authors = $this->authorsGetUseCase->getAll();
@@ -62,6 +65,9 @@ class AuthorGetTest extends KernelTestCase
         $this->assertInstanceOf(AuthorDto::class, $authors[0]);
     }
 
+    /**
+     * @throws AuthorNotFoundException
+     */
     public function testGetOne(): void
     {
         $author = $this->authorsGetUseCase->get('uuid');

@@ -18,6 +18,8 @@ class ArticleUseCase
 
     /**
      * @return array<int, DtoInterface>
+     *
+     * @throws ArticleNotFoundException
      */
     public function getAll(): array
     {
@@ -29,6 +31,9 @@ class ArticleUseCase
         return $this->transformer->transformArray($data);
     }
 
+    /**
+     * @throws ArticleNotFoundException
+     */
     public function get(string $uuid): DtoInterface
     {
         /** @var Article $data */

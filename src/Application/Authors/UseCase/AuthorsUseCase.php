@@ -18,6 +18,8 @@ final class AuthorsUseCase
 
     /**
      * @return array<int, DtoInterface>
+     *
+     * @throws AuthorNotFoundException
      */
     public function getAll(): array
     {
@@ -29,6 +31,9 @@ final class AuthorsUseCase
         return $this->transformer->transformArray($data);
     }
 
+    /**
+     * @throws AuthorNotFoundException
+     */
     public function get(string $uuid): DtoInterface
     {
         /** @var Author $data */
