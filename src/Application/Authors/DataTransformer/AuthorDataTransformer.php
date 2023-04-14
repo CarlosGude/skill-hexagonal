@@ -12,13 +12,14 @@ class AuthorDataTransformer extends AbstractDataTransformer
     /**
      * @param Author $data
      */
-    protected function getDto(AbstractEntity $data): AuthorDto
+    protected function getDto(AbstractEntity $data, bool $nested = true): AuthorDto
     {
         return new AuthorDto(
             uuid: $data->getUuid(),
             name: $data->getName(),
             email: $data->getEmail(),
-            createdAt: $data->getCreatedAt()
+            createdAt: $data->getCreatedAt(),
+            articlesEntity: $data->getArticles()
         );
     }
 }

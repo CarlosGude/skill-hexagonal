@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Http\Articles;
 
-use App\Application\Articles\Dto\ArticleDto;
+use App\Application\Articles\Dto\Output\ArticleDto;
 use App\Application\Articles\UseCase\ArticleUseCase;
 use App\Application\Exceptions\ArticleNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\Model;

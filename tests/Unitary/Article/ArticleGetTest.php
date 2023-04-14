@@ -3,9 +3,10 @@
 namespace App\Tests\Unitary\Article;
 
 use App\Application\Articles\DataTransformer\ArticleDataTransformer;
-use App\Application\Articles\Dto\ArticleDto;
+use App\Application\Articles\Dto\Output\ArticleDto;
 use App\Application\Articles\UseCase\ArticleUseCase;
 use App\Application\Authors\DataTransformer\AuthorDataTransformer;
+use App\Application\Authors\Dto\AuthorDto;
 use App\Application\Exceptions\ArticleNotFoundException;
 use App\Domain\Entity\Article;
 use App\Infrastructure\Repository\MySQLArticleRepository;
@@ -67,6 +68,8 @@ class ArticleGetTest extends KernelTestCase
         $this->assertNotEmpty($articles);
         $this->assertIsArray($articles);
         $this->assertInstanceOf(ArticleDto::class, $articles[0]);
+        $this->assertInstanceOf(AuthorDto::class, $articles[0]->getAuthor());
+
     }
 
     /**
@@ -77,6 +80,7 @@ class ArticleGetTest extends KernelTestCase
         $article = $this->articleUseCase->get('uuid');
         $this->assertIsNotArray($article);
         $this->assertInstanceOf(ArticleDto::class, $article);
+        $this->assertInstanceOf(AuthorDto::class, $article->getAuthor());
     }
 
     public function testGetOneNoExist(): void

@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
 use App\Infrastructure\Interfaces\AuthorRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -42,6 +43,10 @@ class MySQLAuthorRepository extends ServiceEntityRepository implements AuthorRep
 
     public function getOne(string $uuid): ?Author
     {
-        return $this->getEntityManager()->getRepository(Author::class)->findOneBy(['uuid' => $uuid]);
+        $author = $this->getEntityManager()->getRepository(Author::class)->findOneBy(['uuid' => $uuid]);
+        $articles = $this->getEntityManager()->getRepository(Article::class)->findOneBy(['author' => $author]);
+
+        $author->setArticles($articles);
+        return $author;
     }
 }

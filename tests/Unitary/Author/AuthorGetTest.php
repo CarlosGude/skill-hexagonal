@@ -2,10 +2,12 @@
 
 namespace App\Tests\Unitary\Author;
 
+use App\Application\Articles\Dto\Output\ArticleDto;
 use App\Application\Authors\DataTransformer\AuthorDataTransformer;
 use App\Application\Authors\Dto\AuthorDto;
 use App\Application\Authors\UseCase\AuthorsUseCase;
 use App\Application\Exceptions\AuthorNotFoundException;
+use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
 use App\Infrastructure\Repository\MySQLAuthorRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -24,10 +26,20 @@ class AuthorGetTest extends KernelTestCase
     {
         $authors = [];
         for ($i = 0; $i <= rand(5, 10); ++$i) {
-            $authors[] = (new Author())
+            $author = (new Author())
                 ->setName('User name '.$i)
                 ->setEmail("user$i@email.com")
             ;
+
+            for ($i = 0; $i<=rand(1,10); ++$i){
+               $author->addArticle(
+                   (new Article($author))
+                       ->setTitle('Title '.$i)
+                       ->setBody('Body '.$i)
+               );
+            }
+
+            $authors[] = $author;
         }
 
         return $authors;
@@ -45,7 +57,7 @@ class AuthorGetTest extends KernelTestCase
         $userRepositoryMock->expects($this->any())->method('getOne')
             ->willReturnCallback(fn (string $value) => match (true) {
                 'NO_EXIST_UUID' === $value => null,
-                default => (new Author())->setName('TEST')->setEmail('test@email.com')
+                default => $this->authors[0]
             });
 
         $this->authorsGetUseCase = new AuthorsUseCase(
@@ -62,7 +74,12 @@ class AuthorGetTest extends KernelTestCase
         $authors = $this->authorsGetUseCase->getAll();
         $this->assertNotEmpty($authors);
         $this->assertIsArray($authors);
-        $this->assertInstanceOf(AuthorDto::class, $authors[0]);
+        $author = $authors[0];
+        $this->assertInstanceOf(AuthorDto::class, $author);
+        $this->assertIsArray($author->getArticles());
+        $this->assertNotEmpty($author->getArticles());
+        $this->assertInstanceOf(ArticleDto::class,$author->getArticles()[0]);
+
     }
 
     /**
@@ -74,6 +91,9 @@ class AuthorGetTest extends KernelTestCase
         $this->assertNotEmpty($author);
         $this->assertIsNotArray($author);
         $this->assertInstanceOf(AuthorDto::class, $author);
+        $this->assertIsArray($author->getArticles());
+        $this->assertNotEmpty($author->getArticles());
+        $this->assertInstanceOf(ArticleDto::class,$author->getArticles()[0]);
     }
 
     public function testGetOneNoExist(): void

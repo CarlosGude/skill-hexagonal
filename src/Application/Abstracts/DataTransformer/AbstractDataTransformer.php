@@ -7,9 +7,9 @@ use App\Domain\Entity\AbstractEntity;
 
 abstract class AbstractDataTransformer
 {
-    public function transformFromEntity(AbstractEntity $data): DtoInterface
+    public function transformFromEntity(AbstractEntity $data, bool $nested = false): DtoInterface
     {
-        return $this->getDto($data);
+        return $this->getDto($data, $nested);
     }
 
     /**
@@ -27,5 +27,5 @@ abstract class AbstractDataTransformer
         return $bachResponse;
     }
 
-    abstract protected function getDto(AbstractEntity $data): DtoInterface;
+    abstract protected function getDto(AbstractEntity $data, bool $nested): DtoInterface;
 }

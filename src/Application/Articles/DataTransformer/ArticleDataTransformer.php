@@ -4,7 +4,7 @@ namespace App\Application\Articles\DataTransformer;
 
 use App\Application\Abstracts\DataTransformer\AbstractDataTransformer;
 use App\Application\Abstracts\Interfaces\DtoInterface;
-use App\Application\Articles\Dto\ArticleDto;
+use App\Application\Articles\Dto\Output\ArticleDto;
 use App\Application\Authors\DataTransformer\AuthorDataTransformer;
 use App\Application\Authors\Dto\AuthorDto;
 use App\Domain\Entity\AbstractEntity;
@@ -19,10 +19,10 @@ class ArticleDataTransformer extends AbstractDataTransformer
     /**
      * @param Article $data
      */
-    protected function getDto(AbstractEntity $data): DtoInterface
+    protected function getDto(AbstractEntity $data, bool $nested = false): DtoInterface
     {
-        /** @var AuthorDto $authorDto */
-        $authorDto = $this->authorDataTransformer->transformFromEntity($data->getAuthor());
+
+        $authorDto = (!$nested) ?$this->authorDataTransformer->transformFromEntity($data->getAuthor()) : null;
 
         return new ArticleDto(
             uuid: $data->getUuid(),
