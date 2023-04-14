@@ -1,2 +1,0 @@
- php-cs-fixer fix --allow-risky=yes //clean code
- vendor/bin/phpstan analyse src tests --level=max//phpstan
