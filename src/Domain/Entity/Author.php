@@ -11,7 +11,7 @@ class Author extends AbstractEntity
     /**
      * @var array<int, Article>
      */
-    protected array $articles = array();
+    protected array $articles = [];
 
     public function getEmail(): ?string
     {
@@ -37,16 +37,12 @@ class Author extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @param array $articles
-     * @return Author
-     */
     public function setArticles(array $articles): Author
     {
         $this->articles = $articles;
+
         return $this;
     }
-
 
     /**
      * @return array<int, Article>
@@ -60,6 +56,4 @@ class Author extends AbstractEntity
     {
         $this->articles[] = $article;
     }
-
-
 }

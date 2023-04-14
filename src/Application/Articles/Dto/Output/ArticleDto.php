@@ -14,7 +14,6 @@ class ArticleDto implements DtoInterface
         protected readonly ?\DateTime $createdAt,
         protected readonly ?AuthorDto $author = null,
     ) {
-
     }
 
     public function getUuid(): ?string
@@ -32,7 +31,7 @@ class ArticleDto implements DtoInterface
         return $this->body;
     }
 
-    public function getAuthor():? AuthorDto
+    public function getAuthor(): ?AuthorDto
     {
         return $this->author;
     }

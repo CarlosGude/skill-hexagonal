@@ -47,6 +47,7 @@ class MySQLAuthorRepository extends ServiceEntityRepository implements AuthorRep
         $articles = $this->getEntityManager()->getRepository(Article::class)->findOneBy(['author' => $author]);
 
         $author->setArticles($articles);
+
         return $author;
     }
 }

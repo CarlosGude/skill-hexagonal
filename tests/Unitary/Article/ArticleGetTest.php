@@ -69,7 +69,6 @@ class ArticleGetTest extends KernelTestCase
         $this->assertIsArray($articles);
         $this->assertInstanceOf(ArticleDto::class, $articles[0]);
         $this->assertInstanceOf(AuthorDto::class, $articles[0]->getAuthor());
-
     }
 
     /**

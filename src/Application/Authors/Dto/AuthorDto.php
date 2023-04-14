@@ -9,15 +9,15 @@ use App\Domain\Entity\Article;
 class AuthorDto implements DtoInterface
 {
     protected array $articles = [];
-    public function __construct(
-        protected readonly ?string    $uuid,
-        protected readonly ?string    $name,
-        protected readonly ?string    $email,
-        protected readonly ?\DateTime $createdAt,
-        array               $articlesEntity,
 
+    public function __construct(
+        protected readonly ?string $uuid,
+        protected readonly ?string $name,
+        protected readonly ?string $email,
+        protected readonly ?\DateTime $createdAt,
+        array $articlesEntity,
     ) {
-        foreach ($articlesEntity as $article){
+        foreach ($articlesEntity as $article) {
             $this->addArticle($article);
         }
     }
@@ -42,9 +42,6 @@ class AuthorDto implements DtoInterface
         );
     }
 
-    /**
-     * @return array
-     */
     public function getArticles(): array
     {
         return $this->articles;

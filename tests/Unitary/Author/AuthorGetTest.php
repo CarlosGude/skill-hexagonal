@@ -31,12 +31,12 @@ class AuthorGetTest extends KernelTestCase
                 ->setEmail("user$i@email.com")
             ;
 
-            for ($i = 0; $i<=rand(1,10); ++$i){
-               $author->addArticle(
-                   (new Article($author))
-                       ->setTitle('Title '.$i)
-                       ->setBody('Body '.$i)
-               );
+            for ($i = 0; $i <= rand(1, 10); ++$i) {
+                $author->addArticle(
+                    (new Article($author))
+                        ->setTitle('Title '.$i)
+                        ->setBody('Body '.$i)
+                );
             }
 
             $authors[] = $author;
@@ -78,8 +78,7 @@ class AuthorGetTest extends KernelTestCase
         $this->assertInstanceOf(AuthorDto::class, $author);
         $this->assertIsArray($author->getArticles());
         $this->assertNotEmpty($author->getArticles());
-        $this->assertInstanceOf(ArticleDto::class,$author->getArticles()[0]);
-
+        $this->assertInstanceOf(ArticleDto::class, $author->getArticles()[0]);
     }
 
     /**
@@ -93,7 +92,7 @@ class AuthorGetTest extends KernelTestCase
         $this->assertInstanceOf(AuthorDto::class, $author);
         $this->assertIsArray($author->getArticles());
         $this->assertNotEmpty($author->getArticles());
-        $this->assertInstanceOf(ArticleDto::class,$author->getArticles()[0]);
+        $this->assertInstanceOf(ArticleDto::class, $author->getArticles()[0]);
     }
 
     public function testGetOneNoExist(): void
