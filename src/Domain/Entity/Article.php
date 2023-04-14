@@ -2,12 +2,30 @@
 
 namespace App\Domain\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Table(name="Article")
+ *
+ * @ORM\Entity
+ */
 class Article extends AbstractEntity
 {
+    /**
+     * @ORM\Column(name="title", type="string", length=150, nullable=false)
+     */
     protected string $title;
 
+    /**
+     * @ORM\Column(name="body", type="text", nullable=false)
+     */
     protected string $body;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Domain\Entity\Author", inversedBy="articles")
+     *
+     * @ORM\JoinColumn(nullable=false)
+     */
     protected Author $author;
 
     public function __construct(Author $author)

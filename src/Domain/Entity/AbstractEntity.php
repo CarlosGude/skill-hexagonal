@@ -3,20 +3,40 @@
 namespace App\Domain\Entity;
 
 use App\Domain\GenerateUuid;
+use Doctrine\ORM\Mapping as ORM;
 
 abstract class AbstractEntity
 {
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
+     *
+     * @ORM\Id
+     *
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
     protected ?int $id;
 
+    /**
+     * @ORM\Column(name="uuid", type="string", length=36, nullable=false)
+     */
     protected ?string $uuid;
 
+    /**
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
     protected ?\DateTime $createdAt;
 
+    /**
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     */
     protected ?\DateTime $updatedAt;
 
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         $this->uuid = GenerateUuid::generate();
     }
 

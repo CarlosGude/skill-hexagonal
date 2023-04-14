@@ -2,16 +2,37 @@
 
 namespace App\Domain\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Table(name="Author")
+ *
+ * @ORM\Entity
+ */
 class Author extends AbstractEntity
 {
+    /**
+     * @ORM\Column(name="emil", type="text", nullable=false)
+     */
     protected ?string $email;
 
+    /**
+     * @ORM\Column(name="name", type="text", nullable=false)
+     */
     protected ?string $name;
 
     /**
-     * @var array<int, Article>
+     * @ORM\OneToMany(targetEntity="App\Domain\Entity\Article",orphanRemoval=true, mappedBy="author")
      */
-    protected array $articles = [];
+    protected Collection $articles;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->articles = new ArrayCollection();
+    }
 
     public function getEmail(): ?string
     {
@@ -38,21 +59,22 @@ class Author extends AbstractEntity
     }
 
     /**
-     * @param array <int, Article> $articles
-     *
+     * @param array<int,Article> $articles
      * @return $this
      */
     public function setArticles(array $articles): Author
     {
-        $this->articles = $articles;
+        foreach ($articles as $article){
+            $this->articles->add($article);
+        }
 
         return $this;
     }
 
     /**
-     * @return array<int, Article>
+     * @return Collection
      */
-    public function getArticles(): array
+    public function getArticles(): Collection
     {
         return $this->articles;
     }
