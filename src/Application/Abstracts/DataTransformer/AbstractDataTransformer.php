@@ -21,11 +21,11 @@ abstract class AbstractDataTransformer
     {
         $bachResponse = [];
         foreach ($data as $item) {
-            $bachResponse[] = $this->getDto($item, true);
+            $bachResponse[] = $this->getDto($item);
         }
 
         return $bachResponse;
     }
 
-    abstract protected function getDto(AbstractEntity $data, bool $nested): DtoInterface;
+    abstract protected function getDto(AbstractEntity $data, bool $nested = false): DtoInterface;
 }
