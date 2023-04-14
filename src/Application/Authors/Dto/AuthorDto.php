@@ -8,8 +8,16 @@ use App\Domain\Entity\Article;
 
 class AuthorDto implements DtoInterface
 {
+    /** @var array <int, ArticleDto> */
     protected array $articles = [];
 
+    /**
+     * @param string|null $uuid
+     * @param string|null $name
+     * @param string|null $email
+     * @param \DateTime|null $createdAt
+     * @param array <int, Article> $articlesEntity
+     */
     public function __construct(
         protected readonly ?string $uuid,
         protected readonly ?string $name,
@@ -42,6 +50,9 @@ class AuthorDto implements DtoInterface
         );
     }
 
+    /**
+     * @return array<int, ArticleDto>
+     */
     public function getArticles(): array
     {
         return $this->articles;

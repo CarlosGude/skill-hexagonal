@@ -37,6 +37,10 @@ class Author extends AbstractEntity
         return $this;
     }
 
+    /**
+     * @param array <int, Article> $articles
+     * @return $this
+     */
     public function setArticles(array $articles): Author
     {
         $this->articles = $articles;

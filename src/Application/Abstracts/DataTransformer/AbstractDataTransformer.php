@@ -21,7 +21,7 @@ abstract class AbstractDataTransformer
     {
         $bachResponse = [];
         foreach ($data as $item) {
-            $bachResponse[] = $this->getDto($item);
+            $bachResponse[] = $this->getDto($item, true);
         }
 
         return $bachResponse;
