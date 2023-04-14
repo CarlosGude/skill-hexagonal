@@ -21,7 +21,7 @@ class ArticleDataTransformer extends AbstractDataTransformer
      */
     protected function getDto(AbstractEntity $data, bool $nested = false): DtoInterface
     {
-        /** @var null|AuthorDto $authorDto */
+        /** @var AuthorDto|null $authorDto */
         $authorDto = (!$nested) ? $this->authorDataTransformer->transformFromEntity($data->getAuthor()) : null;
 
         return new ArticleDto(

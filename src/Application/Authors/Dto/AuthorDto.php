@@ -12,10 +12,6 @@ class AuthorDto implements DtoInterface
     protected array $articles = [];
 
     /**
-     * @param string|null $uuid
-     * @param string|null $name
-     * @param string|null $email
-     * @param \DateTime|null $createdAt
      * @param array <int, Article> $articlesEntity
      */
     public function __construct(

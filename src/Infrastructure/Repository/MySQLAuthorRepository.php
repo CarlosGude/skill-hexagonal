@@ -44,7 +44,7 @@ class MySQLAuthorRepository extends ServiceEntityRepository implements AuthorRep
     public function getOne(string $uuid): ?Author
     {
         $author = $this->getEntityManager()->getRepository(Author::class)->findOneBy(['uuid' => $uuid]);
-        if(!$author){
+        if (!$author) {
             return null;
         }
         $articles = $this->getEntityManager()->getRepository(Article::class)->findBy(['author' => $author]);

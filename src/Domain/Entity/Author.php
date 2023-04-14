@@ -39,6 +39,7 @@ class Author extends AbstractEntity
 
     /**
      * @param array <int, Article> $articles
+     *
      * @return $this
      */
     public function setArticles(array $articles): Author
