@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Application\Authors\DataTransformer;
+namespace App\Application\Authors\DataTransformer\Output;
 
-use App\Application\Abstracts\DataTransformer\AbstractDataTransformer;
-use App\Application\Authors\Dto\AuthorDto;
+use App\Application\Abstracts\DataTransformer\Output\AbstractDataTransformer;
+use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Domain\Entity\AbstractEntity;
 use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;

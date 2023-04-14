@@ -2,11 +2,11 @@
 
 namespace App\Tests\Unitary\Article;
 
-use App\Application\Articles\DataTransformer\ArticleDataTransformer;
+use App\Application\Articles\DataTransformer\Output\ArticleDataTransformer;
 use App\Application\Articles\Dto\Output\ArticleDto;
 use App\Application\Articles\UseCase\GetArticleUseCase;
-use App\Application\Authors\DataTransformer\AuthorDataTransformer;
-use App\Application\Authors\Dto\AuthorDto;
+use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
+use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Exceptions\ArticleNotFoundException;
 use App\Domain\Entity\Article;
 use App\Infrastructure\Repository\MySQLArticleRepository;

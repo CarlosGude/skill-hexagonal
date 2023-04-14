@@ -3,7 +3,7 @@
 namespace App\Application\Articles\Dto\Input;
 
 use App\Application\Abstracts\Interfaces\Input\DtoInterface;
-use App\Application\Authors\Dto\AuthorDto;
+use App\Application\Authors\Dto\Output\AuthorDto;
 
 class ArticleDto implements DtoInterface
 {

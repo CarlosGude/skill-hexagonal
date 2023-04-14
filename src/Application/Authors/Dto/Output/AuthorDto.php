@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\Authors\Dto;
+namespace App\Application\Authors\Dto\Output;
 
-use App\Application\Abstracts\Interfaces\DtoInterface;
+use App\Application\Abstracts\Interfaces\Input\DtoInterface;
 use App\Application\Articles\Dto\Output\ArticleDto;
 use App\Domain\Entity\Article;
 

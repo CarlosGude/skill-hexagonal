@@ -2,8 +2,8 @@
 
 namespace App\Application\Articles\UseCase;
 
-use App\Application\Abstracts\Interfaces\DtoInterface;
-use App\Application\Articles\DataTransformer\ArticleDataTransformer;
+use App\Application\Abstracts\Interfaces\Input\DtoInterface;
+use App\Application\Articles\DataTransformer\Output\ArticleDataTransformer;
 use App\Application\Exceptions\ArticleNotFoundException;
 use App\Domain\Entity\Article;
 use App\Infrastructure\Interfaces\ArticleRepositoryInterface;

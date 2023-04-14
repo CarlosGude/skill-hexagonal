@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Http\Authors;
 
-use App\Application\Authors\Dto\AuthorDto;
+use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Authors\UseCase\GetAuthorsUseCase;
 use App\Application\Exceptions\AuthorNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\Model;

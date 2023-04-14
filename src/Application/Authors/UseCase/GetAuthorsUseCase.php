@@ -2,8 +2,8 @@
 
 namespace App\Application\Authors\UseCase;
 
-use App\Application\Abstracts\Interfaces\DtoInterface;
-use App\Application\Authors\DataTransformer\AuthorDataTransformer;
+use App\Application\Abstracts\Interfaces\Input\DtoInterface;
+use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Exceptions\AuthorNotFoundException;
 use App\Domain\Entity\Author;
 use App\Infrastructure\Interfaces\AuthorRepositoryInterface;

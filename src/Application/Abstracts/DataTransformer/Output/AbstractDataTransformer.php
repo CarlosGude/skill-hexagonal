@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Application\Abstracts\DataTransformer;
+namespace App\Application\Abstracts\DataTransformer\Output;
 
-use App\Application\Abstracts\Interfaces\DtoInterface;
+
+use App\Application\Abstracts\Interfaces\Input\DtoInterface;
 use App\Domain\Entity\AbstractEntity;
 
 abstract class AbstractDataTransformer
