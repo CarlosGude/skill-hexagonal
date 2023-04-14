@@ -8,7 +8,7 @@ use App\Application\Exceptions\ArticleNotFoundException;
 use App\Domain\Entity\Article;
 use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
 
-class ArticleUseCase
+final class GetArticleUseCase
 {
     public function __construct(
         protected readonly ArticleRepositoryInterface $articleRepository,

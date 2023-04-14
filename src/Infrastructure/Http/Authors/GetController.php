@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Http\Authors;
 
 use App\Application\Authors\Dto\AuthorDto;
-use App\Application\Authors\UseCase\AuthorsUseCase;
+use App\Application\Authors\UseCase\GetAuthorsUseCase;
 use App\Application\Exceptions\AuthorNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(name: 'authors_')]
 class GetController extends AbstractController
 {
-    public function __construct(protected readonly AuthorsUseCase $authorsGetUseCase)
+    public function __construct(protected readonly GetAuthorsUseCase $authorsGetUseCase)
     {
     }
 

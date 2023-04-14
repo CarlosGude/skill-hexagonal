@@ -5,7 +5,7 @@ namespace App\Tests\Unitary\Author;
 use App\Application\Articles\Dto\Output\ArticleDto;
 use App\Application\Authors\DataTransformer\AuthorDataTransformer;
 use App\Application\Authors\Dto\AuthorDto;
-use App\Application\Authors\UseCase\AuthorsUseCase;
+use App\Application\Authors\UseCase\GetAuthorsUseCase;
 use App\Application\Exceptions\AuthorNotFoundException;
 use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class AuthorGetTest extends KernelTestCase
 {
-    protected AuthorsUseCase $authorsGetUseCase;
+    protected GetAuthorsUseCase $authorsGetUseCase;
 
     /** @var array <int,Author> */
     protected array $authors = [];
@@ -60,7 +60,7 @@ class AuthorGetTest extends KernelTestCase
                 default => $this->authors[0]
             });
 
-        $this->authorsGetUseCase = new AuthorsUseCase(
+        $this->authorsGetUseCase = new GetAuthorsUseCase(
             authorRepository: $userRepositoryMock,
             transformer: new AuthorDataTransformer()
         );

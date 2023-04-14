@@ -4,7 +4,7 @@ namespace App\Tests\Unitary\Article;
 
 use App\Application\Articles\DataTransformer\ArticleDataTransformer;
 use App\Application\Articles\Dto\Output\ArticleDto;
-use App\Application\Articles\UseCase\ArticleUseCase;
+use App\Application\Articles\UseCase\GetArticleUseCase;
 use App\Application\Authors\DataTransformer\AuthorDataTransformer;
 use App\Application\Authors\Dto\AuthorDto;
 use App\Application\Exceptions\ArticleNotFoundException;
@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ArticleGetTest extends KernelTestCase
 {
-    protected ArticleUseCase $articleUseCase;
+    protected GetArticleUseCase $articleUseCase;
 
     /** @var array <int,Article> */
     protected array $articles = [];
@@ -53,7 +53,7 @@ class ArticleGetTest extends KernelTestCase
                 default => $this->articles[array_rand($this->articles)]
             });
 
-        $this->articleUseCase = new ArticleUseCase(
+        $this->articleUseCase = new GetArticleUseCase(
             articleRepository: $articleRepositoryMock,
             transformer: new ArticleDataTransformer(new AuthorDataTransformer())
         );

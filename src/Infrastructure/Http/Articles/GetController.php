@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Http\Articles;
 
 use App\Application\Articles\Dto\Output\ArticleDto;
-use App\Application\Articles\UseCase\ArticleUseCase;
+use App\Application\Articles\UseCase\GetArticleUseCase;
 use App\Application\Exceptions\ArticleNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(name: 'articles_')]
 class GetController extends AbstractController
 {
-    public function __construct(protected readonly ArticleUseCase $articleUseCase)
+    public function __construct(protected readonly GetArticleUseCase $articleUseCase)
     {
     }
 

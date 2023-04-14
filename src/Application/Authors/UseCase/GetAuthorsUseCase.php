@@ -8,7 +8,7 @@ use App\Application\Exceptions\AuthorNotFoundException;
 use App\Domain\Entity\Author;
 use App\Infrastructure\Interfaces\AuthorRepositoryInterface;
 
-final class AuthorsUseCase
+final class GetAuthorsUseCase
 {
     public function __construct(
         protected readonly AuthorRepositoryInterface $authorRepository,
