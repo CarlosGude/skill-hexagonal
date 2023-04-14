@@ -6,15 +6,15 @@ use App\Application\Articles\DataTransformer\ArticleDataTransformer;
 use App\Application\Articles\Dto\ArticleDto;
 use App\Application\Articles\UseCase\ArticleUseCase;
 use App\Application\Authors\DataTransformer\AuthorDataTransformer;
+use App\Application\Exceptions\ArticleNotFoundException;
 use App\Domain\Entity\Article;
-use App\Infrastructure\Dto\ResponseDto;
 use App\Infrastructure\Repository\MySQLArticleRepository;
 use App\Tests\Unitary\Author\AuthorGetTest;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ArticleGetTest extends KernelTestCase
 {
-    protected ArticleUseCase $authorsGetUseCase;
+    protected ArticleUseCase $articleUseCase;
 
     /** @var array <int,Article> */
     protected array $articles = [];
@@ -52,37 +52,36 @@ class ArticleGetTest extends KernelTestCase
                 default => $this->articles[array_rand($this->articles)]
             });
 
-        $this->authorsGetUseCase = new ArticleUseCase(
+        $this->articleUseCase = new ArticleUseCase(
             articleRepository: $articleRepositoryMock,
             transformer: new ArticleDataTransformer(new AuthorDataTransformer())
         );
     }
 
+    /**
+     * @throws ArticleNotFoundException
+     */
     public function testGet(): void
     {
-        $response = $this->authorsGetUseCase->get();
-        $this->assertInstanceOf(ResponseDto::class, $response);
-        $this->assertEquals(200, $response->getCode());
-        $this->assertNotEmpty($response->getContent());
-        $this->assertIsArray($response->getContent());
-        $this->assertInstanceOf(ArticleDto::class, $response->getContent()[0]);
+        $articles = $this->articleUseCase->getAll();
+        $this->assertNotEmpty($articles);
+        $this->assertIsArray($articles);
+        $this->assertInstanceOf(ArticleDto::class, $articles[0]);
     }
 
+    /**
+     * @throws ArticleNotFoundException
+     */
     public function testGetOne(): void
     {
-        $response = $this->authorsGetUseCase->get('uuid');
-        $this->assertInstanceOf(ResponseDto::class, $response);
-        $this->assertEquals(200, $response->getCode());
-        $this->assertNotEmpty($response->getContent());
-        $this->assertIsNotArray($response->getContent());
-        $this->assertInstanceOf(ArticleDto::class, $response->getContent());
+        $article = $this->articleUseCase->get('uuid');
+        $this->assertIsNotArray($article);
+        $this->assertInstanceOf(ArticleDto::class, $article);
     }
 
     public function testGetOneNoExist(): void
     {
-        $response = $this->authorsGetUseCase->get('NO_EXIST_UUID');
-        $this->assertInstanceOf(ResponseDto::class, $response);
-        $this->assertEquals(404, $response->getCode());
-        $this->assertEmpty($response->getContent());
+        $this->expectException(ArticleNotFoundException::class);
+        $this->articleUseCase->get('NO_EXIST_UUID');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\Entity\AbstractEntity;
 use App\Domain\Entity\Article;
 use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

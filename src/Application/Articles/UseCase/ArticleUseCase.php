@@ -22,7 +22,7 @@ class ArticleUseCase
     public function getAll(): array
     {
         $data = $this->articleRepository->getAll();
-        if (empty($data)){
+        if (empty($data)) {
             throw new ArticleNotFoundException();
         }
 
@@ -34,7 +34,7 @@ class ArticleUseCase
         /** @var Article $data */
         $data = $this->articleRepository->getOne($uuid);
 
-        if (!$data instanceof Article){
+        if (!$data instanceof Article) {
             throw new ArticleNotFoundException();
         }
 

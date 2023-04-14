@@ -4,20 +4,15 @@ namespace App\Application\Authors\UseCase;
 
 use App\Application\Abstracts\Interfaces\DtoInterface;
 use App\Application\Authors\DataTransformer\AuthorDataTransformer;
-use App\Application\Authors\Dto\AuthorDto;
 use App\Application\Exceptions\AuthorNotFoundException;
 use App\Domain\Entity\Author;
-use App\Infrastructure\Dto\ResponseDto;
-use App\Infrastructure\Http\HttpCode;
-use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
 use App\Infrastructure\Interfaces\AuthorRepositoryInterface;
-use App\Infrastructure\Repository\MySQLAuthorRepository;
 
 final class AuthorsUseCase
 {
     public function __construct(
         protected readonly AuthorRepositoryInterface $authorRepository,
-        protected readonly AuthorDataTransformer     $transformer
+        protected readonly AuthorDataTransformer $transformer
     ) {
     }
 
@@ -27,7 +22,7 @@ final class AuthorsUseCase
     public function getAll(): array
     {
         $data = $this->authorRepository->getAll();
-        if (empty($data)){
+        if (empty($data)) {
             throw new AuthorNotFoundException();
         }
 
@@ -39,7 +34,7 @@ final class AuthorsUseCase
         /** @var Author $data */
         $data = $this->authorRepository->getOne($uuid);
 
-        if (!$data instanceof Author){
+        if (!$data instanceof Author) {
             throw new AuthorNotFoundException();
         }
 

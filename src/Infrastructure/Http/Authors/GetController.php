@@ -41,7 +41,7 @@ class GetController extends AbstractController
     {
         try {
             $data = $this->authorsGetUseCase->getAll();
-        }catch (AuthorNotFoundException $exception){
+        } catch (AuthorNotFoundException $exception) {
             throw new NotFoundHttpException($exception->getMessage());
         }
 
@@ -78,9 +78,10 @@ class GetController extends AbstractController
     {
         try {
             $data = $this->authorsGetUseCase->get($uuid);
-        }catch (AuthorNotFoundException $exception){
+        } catch (AuthorNotFoundException $exception) {
             throw new NotFoundHttpException($exception->getMessage());
         }
+
         return $this->json($data);
     }
 }

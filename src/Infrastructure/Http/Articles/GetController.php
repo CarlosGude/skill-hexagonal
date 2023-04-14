@@ -41,7 +41,7 @@ class GetController extends AbstractController
     {
         try {
             $data = $this->articleUseCase->getAll();
-        }catch (ArticleNotFoundException $exception){
+        } catch (ArticleNotFoundException $exception) {
             throw new NotFoundHttpException($exception->getMessage());
         }
 
@@ -78,7 +78,7 @@ class GetController extends AbstractController
     {
         try {
             $data = $this->articleUseCase->get($uuid);
-        }catch (ArticleNotFoundException $exception){
+        } catch (ArticleNotFoundException $exception) {
             throw new NotFoundHttpException($exception->getMessage());
         }
 

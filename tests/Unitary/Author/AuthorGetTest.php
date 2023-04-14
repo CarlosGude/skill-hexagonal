@@ -5,8 +5,8 @@ namespace App\Tests\Unitary\Author;
 use App\Application\Authors\DataTransformer\AuthorDataTransformer;
 use App\Application\Authors\Dto\AuthorDto;
 use App\Application\Authors\UseCase\AuthorsUseCase;
+use App\Application\Exceptions\AuthorNotFoundException;
 use App\Domain\Entity\Author;
-use App\Infrastructure\Dto\ResponseDto;
 use App\Infrastructure\Repository\MySQLAuthorRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -56,29 +56,23 @@ class AuthorGetTest extends KernelTestCase
 
     public function testGet(): void
     {
-        $response = $this->authorsGetUseCase->get();
-        $this->assertInstanceOf(ResponseDto::class, $response);
-        $this->assertEquals(200, $response->getCode());
-        $this->assertNotEmpty($response->getContent());
-        $this->assertIsArray($response->getContent());
-        $this->assertInstanceOf(AuthorDto::class, $response->getContent()[0]);
+        $authors = $this->authorsGetUseCase->getAll();
+        $this->assertNotEmpty($authors);
+        $this->assertIsArray($authors);
+        $this->assertInstanceOf(AuthorDto::class, $authors[0]);
     }
 
     public function testGetOne(): void
     {
-        $response = $this->authorsGetUseCase->get('uuid');
-        $this->assertInstanceOf(ResponseDto::class, $response);
-        $this->assertEquals(200, $response->getCode());
-        $this->assertNotEmpty($response->getContent());
-        $this->assertIsNotArray($response->getContent());
-        $this->assertInstanceOf(AuthorDto::class, $response->getContent());
+        $author = $this->authorsGetUseCase->get('uuid');
+        $this->assertNotEmpty($author);
+        $this->assertIsNotArray($author);
+        $this->assertInstanceOf(AuthorDto::class, $author);
     }
 
     public function testGetOneNoExist(): void
     {
-        $response = $this->authorsGetUseCase->get('NO_EXIST_UUID');
-        $this->assertInstanceOf(ResponseDto::class, $response);
-        $this->assertEquals(404, $response->getCode());
-        $this->assertEmpty($response->getContent());
+        $this->expectException(AuthorNotFoundException::class);
+        $this->authorsGetUseCase->get('NO_EXIST_UUID');
     }
 }
