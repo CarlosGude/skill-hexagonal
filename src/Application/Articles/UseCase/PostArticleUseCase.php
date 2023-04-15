@@ -33,7 +33,8 @@ class PostArticleUseCase
             throw new \Exception((string) json_encode($errors)); // TODO: CUSTOM EXCEPTION
         }
 
-        $article = $this->articleRepository->put($dto, $flush);
+        $article = $this->articleInputDataTransformer->dtoToEntity($dto);
+        $this->articleRepository->put($article, $flush);
 
         return $this->articleOutputDataTransformer->transformFromEntity($article);
     }

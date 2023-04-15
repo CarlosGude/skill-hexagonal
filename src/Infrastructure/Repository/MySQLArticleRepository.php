@@ -2,9 +2,7 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Application\Articles\Dto\Input\ArticleDto;
 use App\Domain\Entity\Article;
-use App\Domain\Entity\Author;
 use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,13 +14,10 @@ class MySQLArticleRepository extends ServiceEntityRepository implements ArticleR
         parent::__construct($registry, Article::class);
     }
 
-    public function save(Article $entity, bool $flush = false): void
+    public function save(Article $entity, bool $persist = false, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $persist && $this->getEntityManager()->persist($entity);
+        $flush && $this->getEntityManager()->flush();
     }
 
     public function remove(Article $entity, bool $flush = false): void
@@ -50,24 +45,8 @@ class MySQLArticleRepository extends ServiceEntityRepository implements ArticleR
     /**
      * @throws \Exception
      */
-    public function put(ArticleDto $dto, bool $flush = false): Article
+    public function put(Article $article, bool $persist = false, bool $flush = false): void
     {
-        $author = $dto->getAuthor();
-        if (!$author || $author->getUuid()) {
-            throw new \Exception(); // TODO: Exception
-        }
-        /** @var Author $author */
-        $author = $this->getEntityManager()->getRepository(Author::class)->findOneBy([
-            'uuid' => $author->getUuid(),
-        ]);
-
-        $article = new Article($author);
-        $article->setTitle((string) $dto->getTitle())
-            ->setBody((string) $dto->getBody())
-        ;
-
-        $this->save($article, $flush);
-
-        return $article;
+        $this->save($article, $persist, $flush);
     }
 }

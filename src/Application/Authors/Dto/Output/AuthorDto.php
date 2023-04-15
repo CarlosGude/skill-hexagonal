@@ -19,7 +19,7 @@ class AuthorDto implements DtoInterface
         protected readonly string $name,
         protected readonly string $email,
         protected readonly \DateTime $createdAt,
-        array $articlesEntity,
+        array $articlesEntity = [],
     ) {
         foreach ($articlesEntity as $article) {
             $this->addArticle($article);

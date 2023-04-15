@@ -7,6 +7,7 @@ use App\Application\Abstracts\Interfaces\Input\DtoInterface;
 use App\Application\Articles\Dto\Input\ArticleDto;
 use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\Dto\Output\AuthorDto;
+use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
 use App\Infrastructure\Interfaces\AuthorRepositoryInterface;
 
@@ -25,7 +26,7 @@ class ArticleDataTransformer extends AbstractDataTransformer
      */
     public function requestToDto(array $request): DtoInterface
     {
-        if (array_keys($request) == ['title', 'body', 'author']) {
+        if (array_keys($request) != ['title', 'body', 'author']) {
             throw new \Exception(); // TODO: Custom Exception
         }
 
@@ -40,5 +41,22 @@ class ArticleDataTransformer extends AbstractDataTransformer
             body: $request['body'],
             author: $author
         );
+    }
+
+    public function dtoToEntity(ArticleDto $dto): Article
+    {
+        $authorDto = $dto->getAuthor();
+
+        if (!$authorDto) {
+            throw new \Exception();
+        }
+
+        /** @var Author $authorEntity */
+        $authorEntity = $this->authorRepository->getOne($authorDto->getUuid());
+        $article = new Article($authorEntity);
+        $article->setTitle((string) $dto->getTitle());
+        $article->setBody((string) $dto->getBody());
+
+        return $article;
     }
 }
