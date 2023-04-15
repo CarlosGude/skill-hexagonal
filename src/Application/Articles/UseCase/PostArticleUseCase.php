@@ -22,8 +22,6 @@ class PostArticleUseCase
     /**
      * @param array<string,string> $request
      *
-     * @return DtoInterface
-     *
      * @throws \Exception
      */
     public function post(array $request, bool $flush = false): DtoInterface
@@ -32,7 +30,7 @@ class PostArticleUseCase
         $dto = $this->articleInputDataTransformer->requestToDto($request);
 
         if (!empty($errors = $this->validation->validate($dto))) {
-            throw new \Exception((string)json_encode($errors)); // TODO: CUSTOM EXCEPTION
+            throw new \Exception((string) json_encode($errors)); // TODO: CUSTOM EXCEPTION
         }
 
         $article = $this->articleRepository->put($dto, $flush);

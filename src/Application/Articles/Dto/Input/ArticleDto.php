@@ -14,17 +14,17 @@ class ArticleDto implements DtoInterface
     ) {
     }
 
-    public function getTitle():? string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function getBody():? string
+    public function getBody(): ?string
     {
         return $this->body;
     }
 
-    public function getAuthor():? AuthorDto
+    public function getAuthor(): ?AuthorDto
     {
         return $this->author;
     }

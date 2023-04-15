@@ -48,16 +48,13 @@ class MySQLArticleRepository extends ServiceEntityRepository implements ArticleR
     }
 
     /**
-     * @param ArticleDto $dto
-     * @param bool $flush
-     * @return Article
      * @throws \Exception
      */
     public function put(ArticleDto $dto, bool $flush = false): Article
     {
         $author = $dto->getAuthor();
-        if(!$author || $author->getUuid()){
-            throw new \Exception();//TODO: Exception
+        if (!$author || $author->getUuid()) {
+            throw new \Exception(); // TODO: Exception
         }
         /** @var Author $author */
         $author = $this->getEntityManager()->getRepository(Author::class)->findOneBy([
@@ -65,8 +62,8 @@ class MySQLArticleRepository extends ServiceEntityRepository implements ArticleR
         ]);
 
         $article = new Article($author);
-        $article->setTitle((string)$dto->getTitle())
-            ->setBody((string)$dto->getBody())
+        $article->setTitle((string) $dto->getTitle())
+            ->setBody((string) $dto->getBody())
         ;
 
         $this->save($article, $flush);

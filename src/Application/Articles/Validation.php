@@ -11,9 +11,9 @@ class Validation extends AbstractValidator
 {
     protected const AUTHOR_DATA_NOT_VALID = 'The data sent in author must be implements AuthorDto class.';
 
-
     /**
      * @param ArticleDto $dto
+     *
      * @return array<string,string>
      */
     public function validate(DtoInterface $dto): array

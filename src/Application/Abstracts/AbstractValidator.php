@@ -10,7 +10,6 @@ abstract class AbstractValidator
     protected const VALUE_NOT_STRING = 'This value can should be a string.';
 
     /**
-     * @param DtoInterface $dto
      * @return array<string, string>
      */
     abstract public function validate(DtoInterface $dto): array;
