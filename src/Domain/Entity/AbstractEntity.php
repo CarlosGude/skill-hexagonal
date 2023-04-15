@@ -21,17 +21,17 @@ abstract class AbstractEntity
     /**
      * @ORM\Column(name="uuid", type="string", length=36, nullable=false)
      */
-    protected ?string $uuid;
+    protected string $uuid;
 
     /**
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    protected ?\DateTime $createdAt;
+    protected \DateTime $createdAt;
 
     /**
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
-    protected ?\DateTime $updatedAt;
+    protected \DateTime $updatedAt;
 
     public function __construct()
     {
@@ -45,17 +45,17 @@ abstract class AbstractEntity
         return $this->id;
     }
 
-    public function getUuid(): ?string
+    public function getUuid(): string
     {
         return $this->uuid;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }

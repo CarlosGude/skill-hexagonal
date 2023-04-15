@@ -2,31 +2,31 @@
 
 namespace App\Application\Articles\Dto\Output;
 
-use App\Application\Abstracts\Interfaces\Input\DtoInterface;
+use App\Application\Abstracts\Interfaces\Output\DtoInterface;
 use App\Application\Authors\Dto\Output\AuthorDto;
 
 class ArticleDto implements DtoInterface
 {
     public function __construct(
-        protected readonly ?string $uuid,
-        protected readonly ?string $title,
-        protected readonly ?string $body,
-        protected readonly ?\DateTime $createdAt,
+        protected readonly string $uuid,
+        protected readonly string $title,
+        protected readonly string $body,
+        protected readonly \DateTime $createdAt,
         protected readonly ?AuthorDto $author = null,
     ) {
     }
 
-    public function getUuid(): ?string
+    public function getUuid(): string
     {
         return $this->uuid;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function getBody(): ?string
+    public function getBody(): string
     {
         return $this->body;
     }
@@ -36,7 +36,7 @@ class ArticleDto implements DtoInterface
         return $this->author;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }

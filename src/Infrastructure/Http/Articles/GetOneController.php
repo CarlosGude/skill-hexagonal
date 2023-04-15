@@ -18,6 +18,7 @@ class GetOneController extends AbstractController
     public function __construct(protected readonly GetArticleUseCase $articleUseCase)
     {
     }
+
     /**
      * @OA\Get(
      *

@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Interfaces;
 
+use App\Application\Articles\Dto\Input\ArticleDto;
 use App\Domain\Entity\Article;
 
 interface ArticleRepositoryInterface
@@ -16,4 +17,6 @@ interface ArticleRepositoryInterface
     public function getAll(): array;
 
     public function getOne(string $uuid): ?Article;
+
+    public function put(ArticleDto $dto, bool $flush = false): Article;
 }

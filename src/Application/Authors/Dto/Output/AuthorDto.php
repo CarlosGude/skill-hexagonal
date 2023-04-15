@@ -2,7 +2,7 @@
 
 namespace App\Application\Authors\Dto\Output;
 
-use App\Application\Abstracts\Interfaces\Input\DtoInterface;
+use App\Application\Abstracts\Interfaces\Output\DtoInterface;
 use App\Application\Articles\Dto\Output\ArticleDto;
 use App\Domain\Entity\Article;
 
@@ -15,10 +15,10 @@ class AuthorDto implements DtoInterface
      * @param array <int, Article> $articlesEntity
      */
     public function __construct(
-        protected readonly ?string $uuid,
-        protected readonly ?string $name,
-        protected readonly ?string $email,
-        protected readonly ?\DateTime $createdAt,
+        protected readonly string $uuid,
+        protected readonly string $name,
+        protected readonly string $email,
+        protected readonly \DateTime $createdAt,
         array $articlesEntity,
     ) {
         foreach ($articlesEntity as $article) {
@@ -26,12 +26,12 @@ class AuthorDto implements DtoInterface
         }
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -54,12 +54,12 @@ class AuthorDto implements DtoInterface
         return $this->articles;
     }
 
-    public function getUuid(): ?string
+    public function getUuid(): string
     {
         return $this->uuid;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }

@@ -3,7 +3,7 @@
 namespace App\Application\Articles\DataTransformer\Output;
 
 use App\Application\Abstracts\DataTransformer\Output\AbstractDataTransformer;
-use App\Application\Abstracts\Interfaces\Input\DtoInterface;
+use App\Application\Abstracts\Interfaces\Output\DtoInterface;
 use App\Application\Articles\Dto\Output\ArticleDto;
 use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\Dto\Output\AuthorDto;
