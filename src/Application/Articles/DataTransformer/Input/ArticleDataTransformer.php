@@ -7,6 +7,9 @@ use App\Application\Abstracts\Interfaces\Input\DtoInterface;
 use App\Application\Articles\Dto\Input\ArticleDto;
 use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\Dto\Output\AuthorDto;
+use App\Application\Exceptions\AuthorNotFoundException;
+use App\Application\Exceptions\BodyRequestException;
+use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
 use App\Infrastructure\Interfaces\AuthorRepositoryInterface;
 
@@ -19,18 +22,27 @@ class ArticleDataTransformer extends AbstractDataTransformer
     }
 
     /**
-     * @param array<string,string> $request
+     * @param array<string,string|null> $request
      *
-     * @throws \Exception
+     * @throws BodyRequestException
+     * @throws AuthorNotFoundException
      */
     public function requestToDto(array $request): DtoInterface
     {
-        if (array_keys($request) == ['title', 'body', 'author']) {
-            throw new \Exception(); // TODO: Custom Exception
+        if (array_keys($request) != ['title', 'body', 'author']) {
+            throw new BodyRequestException();
         }
 
-        /** @var Author $authorEntity */
+        if (!$request['author']) {
+            throw new AuthorNotFoundException();
+        }
+
+        /** @var Author|null $authorEntity */
         $authorEntity = $this->authorRepository->getOne($request['author']);
+
+        if (!$authorEntity) {
+            throw new AuthorNotFoundException();
+        }
 
         /** @var AuthorDto $author */
         $author = $this->authorDataTransformer->transformFromEntity($authorEntity);
@@ -40,5 +52,22 @@ class ArticleDataTransformer extends AbstractDataTransformer
             body: $request['body'],
             author: $author
         );
+    }
+
+    public function dtoToEntity(ArticleDto $dto): Article
+    {
+        $authorDto = $dto->getAuthor();
+
+        if (!$authorDto) {
+            throw new \Exception();
+        }
+
+        /** @var Author $authorEntity */
+        $authorEntity = $this->authorRepository->getOne($authorDto->getUuid());
+        $article = new Article($authorEntity);
+        $article->setTitle((string) $dto->getTitle());
+        $article->setBody((string) $dto->getBody());
+
+        return $article;
     }
 }

@@ -8,53 +8,17 @@ use App\Application\Articles\UseCase\GetArticleUseCase;
 use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Exceptions\ArticleNotFoundException;
-use App\Domain\Entity\Article;
-use App\Infrastructure\Repository\MySQLArticleRepository;
-use App\Tests\Unitary\Author\AuthorGetTest;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\Unitary\Abstracts\AbstractGetTest;
 
-class ArticleGetTest extends KernelTestCase
+class ArticleGetTest extends AbstractGetTest
 {
-    protected GetArticleUseCase $articleUseCase;
+    protected GetArticleUseCase $getArticleUseCase;
 
-    /** @var array <int,Article> */
-    protected array $articles = [];
-
-    /**
-     * @return array <int, Article>
-     */
-    public static function generateMockArticles(): array
+    public function setUp(): void
     {
-        $articles = [];
-        foreach (AuthorGetTest::generateMockUsers() as $author) {
-            for ($i = 0; $i <= rand(5, 10); ++$i) {
-                $articles[] = (new Article($author))
-                    ->setTitle('TEST ARTICLE '.$i)
-                    ->setBody('TEST ARTICLE BODY')
-                ;
-            }
-        }
-
-        return $articles;
-    }
-
-    protected function setUp(): void
-    {
-        $this->articles = $this->generateMockArticles();
-        $articleRepositoryMock = $this->createMock(MySQLArticleRepository::class);
-
-        // Mocks an array of user Response
-        $articleRepositoryMock->expects($this->any())->method('getAll')->willReturn($this->articles);
-
-        // Mocks User response
-        $articleRepositoryMock->expects($this->any())->method('getOne')
-            ->willReturnCallback(fn (string $value) => match (true) {
-                'NO_EXIST_UUID' === $value => null,
-                default => $this->articles[array_rand($this->articles)]
-            });
-
-        $this->articleUseCase = new GetArticleUseCase(
-            articleRepository: $articleRepositoryMock,
+        parent::setUp();
+        $this->getArticleUseCase = new GetArticleUseCase(
+            articleRepository: $this->articleRepositoryMock,
             transformer: new ArticleDataTransformer(new AuthorDataTransformer())
         );
     }
@@ -64,7 +28,7 @@ class ArticleGetTest extends KernelTestCase
      */
     public function testGet(): void
     {
-        $articles = $this->articleUseCase->getAll();
+        $articles = $this->getArticleUseCase->getAll();
         $this->assertNotEmpty($articles);
         $this->assertIsArray($articles);
         $this->assertInstanceOf(ArticleDto::class, $articles[0]);
@@ -76,15 +40,15 @@ class ArticleGetTest extends KernelTestCase
      */
     public function testGetOne(): void
     {
-        $article = $this->articleUseCase->get('uuid');
+        $article = $this->getArticleUseCase->get('uuid');
         $this->assertIsNotArray($article);
         $this->assertInstanceOf(ArticleDto::class, $article);
         $this->assertInstanceOf(AuthorDto::class, $article->getAuthor());
     }
 
-    public function testGetOneNoExist(): void
+    public function testGetNotExist(): void
     {
         $this->expectException(ArticleNotFoundException::class);
-        $this->articleUseCase->get('NO_EXIST_UUID');
+        $this->getArticleUseCase->get('NO_EXIST_UUID');
     }
 }

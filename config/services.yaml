@@ -19,6 +19,10 @@ services:
             - '../src/Domain/Entity/'
             - '../src/Kernel.php'
 
+    App\Infrastructure\Repository\MySQLArticleRepository:
+        arguments:
+            - $authorRepository: '@App\Infrastructure\Repository\MySQLAuthorRepository'
+
     App\Application\Articles\UseCase\GetArticleUseCase:
         arguments:
             - $articleRepository: '@App\Infrastructure\Repository\MySQLArticleRepository'

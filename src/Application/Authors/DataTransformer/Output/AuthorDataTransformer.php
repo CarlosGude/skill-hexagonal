@@ -15,7 +15,7 @@ class AuthorDataTransformer extends AbstractDataTransformer
      */
     protected function getDto(AbstractEntity $data, bool $nested = true): AuthorDto
     {
-        /** @var array<int,Article> $articles */
+        /** @var array<int, Article> $articles */
         $articles = $data->getArticles()->toArray();
 
         return new AuthorDto(

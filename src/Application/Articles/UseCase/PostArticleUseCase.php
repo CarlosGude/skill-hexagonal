@@ -7,6 +7,8 @@ use App\Application\Articles\DataTransformer\Input\ArticleDataTransformer as Art
 use App\Application\Articles\DataTransformer\Output\ArticleDataTransformer as ArticleOutputDataTransformer;
 use App\Application\Articles\Dto\Input\ArticleDto as ArticleInputDto;
 use App\Application\Articles\Validation;
+use App\Application\Exceptions\BodyRequestException;
+use App\Application\Exceptions\DtoValidationException;
 use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
 
 class PostArticleUseCase
@@ -20,9 +22,9 @@ class PostArticleUseCase
     }
 
     /**
-     * @param array<string,string> $request
+     * @param array<string, string|null> $request
      *
-     * @throws \Exception
+     * @throws DtoValidationException|BodyRequestException
      */
     public function post(array $request, bool $flush = false): DtoInterface
     {
@@ -30,10 +32,11 @@ class PostArticleUseCase
         $dto = $this->articleInputDataTransformer->requestToDto($request);
 
         if (!empty($errors = $this->validation->validate($dto))) {
-            throw new \Exception((string) json_encode($errors)); // TODO: CUSTOM EXCEPTION
+            throw (new DtoValidationException())->setErrors($errors);
         }
 
-        $article = $this->articleRepository->put($dto, $flush);
+        $article = $this->articleInputDataTransformer->dtoToEntity($dto);
+        $this->articleRepository->put($article, $flush);
 
         return $this->articleOutputDataTransformer->transformFromEntity($article);
     }
