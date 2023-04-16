@@ -6,46 +6,29 @@ use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\UseCase\GetAuthorsUseCase;
 use App\Infrastructure\Http\Authors\GetController;
 use App\Infrastructure\Http\Authors\GetOneController;
-use App\Infrastructure\Repository\MySQLAuthorRepository;
-use App\Tests\Aplication\Author\AuthorGetTest;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\Infrastructure\AbstractTest;
 
-class GetControllerTest extends KernelTestCase
+class GetControllerTest extends AbstractTest
 {
-    protected MySQLAuthorRepository $authorRepositoryMock;
     protected GetController $getController;
     protected GetOneController $getOneController;
     protected GetAuthorsUseCase $getAuthorUseCase;
 
     protected function setUp(): void
     {
-        self::bootKernel();
-        $container = static::getContainer();
-        $authors = AuthorGetTest::generateMockUsers();
-
-        $authorRepositoryMock = $this->createMock(MySQLAuthorRepository::class);
-
-        // Mocks an array of user Response
-        $authorRepositoryMock->expects($this->any())->method('getAll')->willReturn($authors);
-
-        // Mocks User response
-        $authorRepositoryMock->expects($this->any())->method('getOne')
-            ->willReturnCallback(fn (string $value) => match (true) {
-                'NO_EXIST_UUID' === $value => null,
-                default => $authors[0]
-            });
-
+        parent::setUp();
         /** @var GetController $getController */
-        $getController = $container->get(GetController::class);
+        $getController = $this->container->get(GetController::class);
 
         /** @var GetOneController $getOneController */
-        $getOneController = $container->get(GetOneController::class);
+        $getOneController = $this->container->get(GetOneController::class);
 
         $this->getController = $getController;
         $this->getOneController = $getOneController;
 
         $this->getAuthorUseCase = new GetAuthorsUseCase(
-            authorRepository: $authorRepositoryMock, transformer: new AuthorDataTransformer()
+            authorRepository: $this->authorRepository,
+            transformer: new AuthorDataTransformer()
         );
     }
 

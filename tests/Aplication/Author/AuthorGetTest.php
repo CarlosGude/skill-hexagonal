@@ -7,61 +7,17 @@ use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Authors\UseCase\GetAuthorsUseCase;
 use App\Application\Exceptions\AuthorNotFoundException;
-use App\Domain\Entity\Article;
-use App\Domain\Entity\Author;
-use App\Infrastructure\Repository\MySQLAuthorRepository;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\Infrastructure\AbstractTest;
 
-class AuthorGetTest extends KernelTestCase
+class AuthorGetTest extends AbstractTest
 {
     protected GetAuthorsUseCase $authorsGetUseCase;
 
-    /** @var array <int,Author> */
-    protected array $authors = [];
-
-    /**
-     * @return array <int, Author>
-     */
-    public static function generateMockUsers(): array
-    {
-        $authors = [];
-        for ($i = 0; $i <= rand(5, 10); ++$i) {
-            $author = (new Author())
-                ->setName('User name '.$i)
-                ->setEmail("user$i@email.com")
-            ;
-
-            for ($i = 0; $i <= rand(1, 10); ++$i) {
-                $author->addArticle(
-                    (new Article($author))
-                        ->setTitle('Title '.$i)
-                        ->setBody('Body '.$i)
-                );
-            }
-
-            $authors[] = $author;
-        }
-
-        return $authors;
-    }
-
     protected function setUp(): void
     {
-        $this->authors = $this->generateMockUsers();
-        $authorRepositoryMock = $this->createMock(MySQLAuthorRepository::class);
-
-        // Mocks an array of user Response
-        $authorRepositoryMock->expects($this->any())->method('getAll')->willReturn($this->authors);
-
-        // Mocks User response
-        $authorRepositoryMock->expects($this->any())->method('getOne')
-            ->willReturnCallback(fn (string $value) => match (true) {
-                'NO_EXIST_UUID' === $value => null,
-                default => $this->authors[0]
-            });
-
+        parent::setUp();
         $this->authorsGetUseCase = new GetAuthorsUseCase(
-            authorRepository: $authorRepositoryMock,
+            authorRepository: $this->authorRepository,
             transformer: new AuthorDataTransformer()
         );
     }

@@ -3,9 +3,9 @@
 namespace App\Tests\Aplication\Abstracts;
 
 use App\Domain\Entity\Article;
+use App\Domain\Entity\Author;
 use App\Infrastructure\Repository\MySQLArticleRepository;
 use App\Infrastructure\Repository\MySQLAuthorRepository;
-use App\Tests\Aplication\Author\AuthorGetTest;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class AbstractPostTest extends KernelTestCase
@@ -19,7 +19,7 @@ abstract class AbstractPostTest extends KernelTestCase
     public static function generateMockArticles(): array
     {
         $articles = [];
-        foreach (AuthorGetTest::generateMockUsers() as $author) {
+        foreach (self::generateMockAuthors() as $author) {
             for ($i = 0; $i <= rand(5, 10); ++$i) {
                 $articles[] = (new Article($author))
                     ->setTitle('TEST ARTICLE '.$i)
@@ -31,10 +31,36 @@ abstract class AbstractPostTest extends KernelTestCase
         return $articles;
     }
 
+    /**
+     * @return array <int, Author>
+     */
+    public static function generateMockAuthors(): array
+    {
+        $authors = [];
+        for ($i = 0; $i <= rand(5, 10); ++$i) {
+            $author = (new Author())
+                ->setName('User name '.$i)
+                ->setEmail("user$i@email.com")
+            ;
+
+            for ($i = 0; $i <= rand(1, 10); ++$i) {
+                $author->addArticle(
+                    (new Article($author))
+                        ->setTitle('Title '.$i)
+                        ->setBody('Body '.$i)
+                );
+            }
+
+            $authors[] = $author;
+        }
+
+        return $authors;
+    }
+
     protected function setUp(): void
     {
-        $articles = $this->generateMockArticles();
-        $authors = AuthorGetTest::generateMockUsers();
+        $articles = self::generateMockArticles();
+        $authors = self::generateMockAuthors();
 
         $this->articleRepositoryMock = $this->getMockBuilder(MySQLArticleRepository::class)
             ->onlyMethods(['getAll', 'getOne'])

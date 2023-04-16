@@ -7,47 +7,28 @@ use App\Application\Articles\UseCase\GetArticleUseCase;
 use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Infrastructure\Http\Articles\GetController;
 use App\Infrastructure\Http\Articles\GetOneController;
-use App\Infrastructure\Repository\MySQLArticleRepository;
-use App\Infrastructure\Repository\MySQLAuthorRepository;
-use App\Tests\Aplication\Article\ArticleGetTest;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\Infrastructure\AbstractTest;
 
-class GetControllerTest extends KernelTestCase
+class GetControllerTest extends AbstractTest
 {
-    protected MySQLAuthorRepository $authorRepositoryMock;
     protected GetController $getController;
     protected GetOneController $getOneController;
     protected GetArticleUseCase $getArticleUseCase;
 
     protected function setUp(): void
     {
-        self::bootKernel();
-        $container = static::getContainer();
-        $articles = ArticleGetTest::generateMockArticles();
-
-        $articleRepository = $this->createMock(MySQLArticleRepository::class);
-
-        // Mocks an array of user Response
-        $articleRepository->expects($this->any())->method('getAll')->willReturn($articles);
-
-        // Mocks User response
-        $articleRepository->expects($this->any())->method('getOne')
-            ->willReturnCallback(fn (string $value) => match (true) {
-                'NO_EXIST_UUID' === $value => null,
-                default => $articles[0]
-            });
-
+        parent::setUp();
         /** @var GetController $getController */
-        $getController = $container->get(GetController::class);
+        $getController = $this->container->get(GetController::class);
 
         /** @var GetOneController $getOneController */
-        $getOneController = $container->get(GetOneController::class);
+        $getOneController = $this->container->get(GetOneController::class);
 
         $this->getController = $getController;
         $this->getOneController = $getOneController;
 
         $this->getArticleUseCase = new GetArticleUseCase(
-            articleRepository: $articleRepository,
+            articleRepository: $this->articleRepository,
             transformer: new ArticleDataTransformer(new AuthorDataTransformer())
         );
     }

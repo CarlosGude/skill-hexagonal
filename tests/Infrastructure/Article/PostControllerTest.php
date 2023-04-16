@@ -12,13 +12,11 @@ use App\Infrastructure\Http\Articles\PostController;
 use App\Infrastructure\Http\HttpCode;
 use App\Infrastructure\Repository\MySQLArticleRepository;
 use App\Infrastructure\Repository\MySQLAuthorRepository;
-use App\Tests\Aplication\Abstracts\AbstractPostTest;
-use App\Tests\Aplication\Author\AuthorGetTest;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\Infrastructure\AbstractTest;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class PostControllerTest extends KernelTestCase
+class PostControllerTest extends AbstractTest
 {
     protected MySQLAuthorRepository $authorRepositoryMock;
     protected MySQLArticleRepository $articleRepositoryMock;
@@ -32,50 +30,16 @@ class PostControllerTest extends KernelTestCase
      */
     protected function setUp(): void
     {
-        self::bootKernel();
-        $container = static::getContainer();
-        $articles = AbstractPostTest::generateMockArticles();
-        $authors = AuthorGetTest::generateMockUsers();
-
-        /** @var MySQLArticleRepository $articleRepositoryMock */
-        $articleRepositoryMock = $this->getMockBuilder(MySQLArticleRepository::class)
-            ->onlyMethods(['getAll', 'getOne'])
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $authorRepositoryMock = $this->createMock(MySQLAuthorRepository::class);
-
-        $authorRepositoryMock->expects($this->any())->method('getAll')->willReturn($authors);
-
-        // Mocks User response
-        $authorRepositoryMock->expects($this->any())->method('getOne')
-            ->willReturnCallback(fn (string $value) => match (true) {
-                'NO_EXIST_UUID' === $value => null,
-                default => $authors[0]
-            });
-
-        $this->articleRepositoryMock = $this->createMock(MySQLArticleRepository::class);
-
-        // Mocks an array of user Response
-        $this->articleRepositoryMock->expects($this->any())->method('getAll')->willReturn($articles);
-
-        // Mocks User response
-        $this->articleRepositoryMock->expects($this->any())->method('getOne')
-            ->willReturnCallback(fn (string $value) => match (true) {
-                'NO_EXIST_UUID' === $value => null,
-                default => $articles[0]
-            });
-
+        parent::setUp();
         $this->postArticleUseCase = new PostArticleUseCase(
-            articleInputDataTransformer: new InputArticleDataTransformer($authorRepositoryMock, new AuthorDataTransformer()),
+            articleInputDataTransformer: new InputArticleDataTransformer($this->authorRepository, new AuthorDataTransformer()),
             articleOutputDataTransformer: new OutputArticleDataTransformer(new AuthorDataTransformer()),
-            articleRepository: $articleRepositoryMock,
+            articleRepository: $this->articleRepository,
             validation: new Validation()
         );
 
         /** @var PostController $postController */
-        $postController = $container->get(PostController::class);
+        $postController = $this->container->get(PostController::class);
         $this->postController = $postController;
     }
 

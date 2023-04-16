@@ -18,7 +18,7 @@ class ArticleGetTest extends AbstractGetTest
     {
         parent::setUp();
         $this->getArticleUseCase = new GetArticleUseCase(
-            articleRepository: $this->articleRepositoryMock,
+            articleRepository: $this->articleRepository,
             transformer: new ArticleDataTransformer(new AuthorDataTransformer())
         );
     }

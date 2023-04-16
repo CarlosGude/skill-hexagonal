@@ -3,16 +3,17 @@
 namespace App\Tests\Aplication\Abstracts;
 
 use App\Domain\Entity\Article;
+use App\Domain\Entity\Author;
+use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
+use App\Infrastructure\Interfaces\AuthorRepositoryInterface;
 use App\Infrastructure\Repository\MySQLArticleRepository;
-use App\Tests\Aplication\Author\AuthorGetTest;
+use App\Infrastructure\Repository\MySQLAuthorRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class AbstractGetTest extends KernelTestCase
 {
-    protected MySQLArticleRepository $articleRepositoryMock;
-
-    /** @var array <int,Article> */
-    protected array $articles = [];
+    protected ArticleRepositoryInterface $articleRepository;
+    protected AuthorRepositoryInterface $authorRepository;
 
     /**
      * @return array <int, Article>
@@ -20,7 +21,7 @@ abstract class AbstractGetTest extends KernelTestCase
     public static function generateMockArticles(): array
     {
         $articles = [];
-        foreach (AuthorGetTest::generateMockUsers() as $author) {
+        foreach (self::generateMockAuthors() as $author) {
             for ($i = 0; $i <= rand(5, 10); ++$i) {
                 $articles[] = (new Article($author))
                     ->setTitle('TEST ARTICLE '.$i)
@@ -32,19 +33,58 @@ abstract class AbstractGetTest extends KernelTestCase
         return $articles;
     }
 
+    /**
+     * @return array <int, Author>
+     */
+    public static function generateMockAuthors(): array
+    {
+        $authors = [];
+        for ($i = 0; $i <= rand(5, 10); ++$i) {
+            $author = (new Author())
+                ->setName('User name '.$i)
+                ->setEmail("user$i@email.com")
+            ;
+
+            for ($i = 0; $i <= rand(1, 10); ++$i) {
+                $author->addArticle(
+                    (new Article($author))
+                        ->setTitle('Title '.$i)
+                        ->setBody('Body '.$i)
+                );
+            }
+
+            $authors[] = $author;
+        }
+
+        return $authors;
+    }
+
     protected function setUp(): void
     {
-        $this->articles = $this->generateMockArticles();
-        $this->articleRepositoryMock = $this->createMock(MySQLArticleRepository::class);
+        $articles = $this->generateMockArticles();
+        $this->articleRepository = $this->createMock(MySQLArticleRepository::class);
 
         // Mocks an array of user Response
-        $this->articleRepositoryMock->expects($this->any())->method('getAll')->willReturn($this->articles);
+        $this->articleRepository->expects($this->any())->method('getAll')->willReturn($articles);
 
         // Mocks User response
-        $this->articleRepositoryMock->expects($this->any())->method('getOne')
+        $this->articleRepository->expects($this->any())->method('getOne')
             ->willReturnCallback(fn (string $value) => match (true) {
                 'NO_EXIST_UUID' === $value => null,
-                default => $this->articles[array_rand($this->articles)]
+                default => $articles[array_rand($articles)]
+            });
+
+        $authors = self::generateMockAuthors();
+        $this->authorRepository = $this->createMock(MySQLAuthorRepository::class);
+
+        // Mocks an array of user Response
+        $this->authorRepository->expects($this->any())->method('getAll')->willReturn($authors);
+
+        // Mocks User response
+        $this->authorRepository->expects($this->any())->method('getOne')
+            ->willReturnCallback(fn (string $value) => match (true) {
+                'NO_EXIST_UUID' === $value => null,
+                default => $authors[0]
             });
     }
 
