@@ -9,14 +9,24 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 #[Route(name: 'articles_')]
 class GetOneController extends AbstractController
 {
-    public function __construct(protected readonly GetArticleUseCase $articleUseCase)
+    private Serializer $serializer;
+
+    public function __construct()
     {
+        $encoders = [new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+
+        $this->serializer = new Serializer($normalizers, $encoders);
     }
 
     /**
@@ -31,14 +41,17 @@ class GetOneController extends AbstractController
      * )
      */
     #[Route('api/articles/{uuid}', name: 'get_entity_one', methods: ['GET'])]
-    public function getOne(string $uuid): JsonResponse
+    public function getOne(GetArticleUseCase $articleUseCase,string $uuid): Response
     {
         try {
-            $data = $this->articleUseCase->get($uuid);
+            $data = $articleUseCase->get($uuid);
         } catch (ArticleNotFoundException $exception) {
             throw new NotFoundHttpException($exception->getMessage());
         }
 
-        return $this->json($data);
+        $response = new Response($this->serializer->serialize($data,'json'));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 }

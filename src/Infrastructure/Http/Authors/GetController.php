@@ -9,14 +9,25 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route(name: 'authors_')]
 class GetController extends AbstractController
 {
-    public function __construct(protected readonly GetAuthorsUseCase $authorsGetUseCase)
+    private Serializer $serializer;
+
+    public function __construct()
     {
+        $encoders = [new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+
+        $this->serializer = new Serializer($normalizers, $encoders);
     }
 
     /**
@@ -35,14 +46,17 @@ class GetController extends AbstractController
      * )
      */
     #[Route('api/authors', name: 'get_entity', methods: ['GET'])]
-    public function get(): JsonResponse
+    public function get(GetAuthorsUseCase $authorsGetUseCase): Response
     {
         try {
-            $data = $this->authorsGetUseCase->getAll();
+            $data = $authorsGetUseCase->getAll();
         } catch (AuthorNotFoundException $exception) {
             throw new NotFoundHttpException($exception->getMessage());
         }
 
-        return $this->json($data);
+        $response = new Response($this->serializer->serialize($data,'json'));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 }

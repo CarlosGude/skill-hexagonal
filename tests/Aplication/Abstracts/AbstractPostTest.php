@@ -13,12 +13,6 @@ abstract class AbstractPostTest extends KernelTestCase
     protected MySQLArticleRepository $articleRepositoryMock;
     protected MySQLAuthorRepository $authorRepositoryMock;
 
-    /** @var array <int,Article> */
-    protected array $articles = [];
-
-    /** @var array <int,Author> */
-    protected array $authors = [];
-
     /**
      * @return array <int, Article>
      */
@@ -39,8 +33,8 @@ abstract class AbstractPostTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        $this->articles = $this->generateMockArticles();
-        $this->authors = AuthorGetTest::generateMockUsers();
+        $articles = $this->generateMockArticles();
+        $authors = AuthorGetTest::generateMockUsers();
 
         $this->articleRepositoryMock = $this->getMockBuilder(MySQLArticleRepository::class)
             ->onlyMethods(['getAll', 'getOne'])
@@ -49,23 +43,23 @@ abstract class AbstractPostTest extends KernelTestCase
         ;
         $this->authorRepositoryMock = $this->createMock(MySQLAuthorRepository::class);
 
-        $this->authorRepositoryMock->expects($this->any())->method('getAll')->willReturn($this->authors);
+        $this->authorRepositoryMock->expects($this->any())->method('getAll')->willReturn($authors);
 
         // Mocks User response
         $this->authorRepositoryMock->expects($this->any())->method('getOne')
             ->willReturnCallback(fn (string $value) => match (true) {
                 'NO_EXIST_UUID' === $value => null,
-                default => $this->authors[0]
+                default => $authors[0]
             });
 
         // Mocks an array of user Response
-        $this->articleRepositoryMock->expects($this->any())->method('getAll')->willReturn($this->articles);
+        $this->articleRepositoryMock->expects($this->any())->method('getAll')->willReturn($articles);
 
         // Mocks User response
         $this->articleRepositoryMock->expects($this->any())->method('getOne')
             ->willReturnCallback(fn (string $value) => match (true) {
                 'NO_EXIST_UUID' === $value => null,
-                default => $this->articles[array_rand($this->articles)]
+                default => $articles[0]
             });
     }
 

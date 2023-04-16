@@ -48,20 +48,20 @@ class AuthorGetTest extends KernelTestCase
     protected function setUp(): void
     {
         $this->authors = $this->generateMockUsers();
-        $userRepositoryMock = $this->createMock(MySQLAuthorRepository::class);
+        $authorRepositoryMock = $this->createMock(MySQLAuthorRepository::class);
 
         // Mocks an array of user Response
-        $userRepositoryMock->expects($this->any())->method('getAll')->willReturn($this->authors);
+        $authorRepositoryMock->expects($this->any())->method('getAll')->willReturn($this->authors);
 
         // Mocks User response
-        $userRepositoryMock->expects($this->any())->method('getOne')
+        $authorRepositoryMock->expects($this->any())->method('getOne')
             ->willReturnCallback(fn (string $value) => match (true) {
                 'NO_EXIST_UUID' === $value => null,
                 default => $this->authors[0]
             });
 
         $this->authorsGetUseCase = new GetAuthorsUseCase(
-            authorRepository: $userRepositoryMock,
+            authorRepository: $authorRepositoryMock,
             transformer: new AuthorDataTransformer()
         );
     }
