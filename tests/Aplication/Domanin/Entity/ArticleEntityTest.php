@@ -75,4 +75,19 @@ class ArticleEntityTest extends KernelTestCase
             $this->assertEquals('This value should not be blank.', $error->getMessage());
         }
     }
+
+    public function testCreateArticleWithoutAuthor(): void
+    {
+        $article = new Article();
+        $article->setTitle('TITLE')->setBody('body');
+
+        $errors = $this->validation->validate($article);
+        $this->assertNotEmpty($errors);
+
+        /** @var ConstraintViolation $error */
+        foreach ($errors as $error) {
+            $this->assertEquals('author', $error->getPropertyPath());
+            $this->assertEquals('This value should not be null.', $error->getMessage());
+        }
+    }
 }

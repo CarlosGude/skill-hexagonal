@@ -28,10 +28,12 @@ class Article extends AbstractEntity
      * @ORM\ManyToOne(targetEntity="App\Domain\Entity\Author", inversedBy="articles")
      *
      * @ORM\JoinColumn(nullable=false)
+     *
      */
-    protected Author $author;
+    #[Assert\NotNull]
+    protected ?Author $author;
 
-    public function __construct(Author $author)
+    public function __construct(Author $author = null)
     {
         parent::__construct();
         $this->author = $author;
