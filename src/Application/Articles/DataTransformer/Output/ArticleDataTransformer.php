@@ -30,8 +30,8 @@ class ArticleDataTransformer extends AbstractDataTransformer
             uuid: $data->getUuid(),
             title: (string) $data->getTitle(),
             body: (string) $data->getBody(),
-            author: $authorDto,
             createdAt: $data->getCreatedAt(),
+            author: $authorDto,
         );
     }
 }
