@@ -28,7 +28,6 @@ class Article extends AbstractEntity
      * @ORM\ManyToOne(targetEntity="App\Domain\Entity\Author", inversedBy="articles")
      *
      * @ORM\JoinColumn(nullable=false)
-     *
      */
     #[Assert\NotNull]
     protected ?Author $author;

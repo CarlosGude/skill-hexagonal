@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Aplication\Domanin\Entity;
+namespace App\Tests\Domanin\Entity;
 
 use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;

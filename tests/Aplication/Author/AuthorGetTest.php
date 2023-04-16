@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Aplication\Unitary\Author;
+namespace App\Tests\Aplication\Author;
 
 use App\Application\Articles\Dto\Output\ArticleDto;
 use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;

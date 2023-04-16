@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Aplication\Domanin\Entity;
+namespace App\Tests\Domanin\Entity;
 
 use App\Domain\Entity\Author;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Aplication\Unitary\Article;
+namespace App\Tests\Aplication\Article;
 
 use App\Application\Abstracts\AbstractValidator;
 use App\Application\Articles\DataTransformer\Input\ArticleDataTransformer as InputArticleDataTransformer;
@@ -13,7 +13,7 @@ use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Exceptions\AuthorNotFoundException;
 use App\Application\Exceptions\BodyRequestException;
 use App\Application\Exceptions\DtoValidationException;
-use App\Tests\Aplication\Unitary\Abstracts\AbstractPostTest;
+use App\Tests\Aplication\Abstracts\AbstractPostTest;
 
 class ArticlePostTest extends AbstractPostTest
 {

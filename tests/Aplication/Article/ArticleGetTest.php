@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Aplication\Unitary\Article;
+namespace App\Tests\Aplication\Article;
 
 use App\Application\Articles\DataTransformer\Output\ArticleDataTransformer;
 use App\Application\Articles\Dto\Output\ArticleDto;
@@ -8,7 +8,7 @@ use App\Application\Articles\UseCase\GetArticleUseCase;
 use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Exceptions\ArticleNotFoundException;
-use App\Tests\Aplication\Unitary\Abstracts\AbstractGetTest;
+use App\Tests\Aplication\Abstracts\AbstractGetTest;
 
 class ArticleGetTest extends AbstractGetTest
 {
