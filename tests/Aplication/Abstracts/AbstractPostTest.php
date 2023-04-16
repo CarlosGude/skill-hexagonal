@@ -3,7 +3,6 @@
 namespace App\Tests\Aplication\Abstracts;
 
 use App\Domain\Entity\Article;
-use App\Domain\Entity\Author;
 use App\Infrastructure\Repository\MySQLArticleRepository;
 use App\Infrastructure\Repository\MySQLAuthorRepository;
 use App\Tests\Aplication\Author\AuthorGetTest;
