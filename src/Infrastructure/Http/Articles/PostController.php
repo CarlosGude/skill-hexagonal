@@ -53,10 +53,11 @@ class PostController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
 
         try {
-            $data = $articleUseCase->post($request->toArray(), $persist,$flush);
+            $data = $articleUseCase->post($request->toArray(), $persist, $flush);
         } catch (DtoValidationException $exception) {
             $response = $response->setContent($this->serializer->serialize($exception->getErrors(), 'json'));
             $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+
             return $response;
         }
 

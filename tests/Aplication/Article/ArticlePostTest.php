@@ -2,7 +2,6 @@
 
 namespace App\Tests\Aplication\Article;
 
-use App\Application\Abstracts\AbstractValidator;
 use App\Application\Articles\DataTransformer\Input\ArticleDataTransformer as InputArticleDataTransformer;
 use App\Application\Articles\DataTransformer\Output\ArticleDataTransformer as OutputArticleDataTransformer;
 use App\Application\Articles\Dto\Output\ArticleDto;
@@ -10,7 +9,6 @@ use App\Application\Articles\UseCase\PostArticleUseCase;
 use App\Application\Articles\Validation;
 use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\Dto\Output\AuthorDto;
-use App\Application\Exceptions\AuthorNotFoundException;
 use App\Application\Exceptions\BodyRequestException;
 use App\Application\Exceptions\DtoValidationException;
 use App\Tests\Aplication\Abstracts\AbstractPostTest;

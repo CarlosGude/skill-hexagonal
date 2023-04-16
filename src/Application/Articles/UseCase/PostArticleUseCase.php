@@ -38,7 +38,7 @@ class PostArticleUseCase
         }
 
         $article = $this->articleInputDataTransformer->dtoToEntity($dto);
-        $this->articleRepository->post($article,$persist, $flush);
+        $this->articleRepository->post($article, $persist, $flush);
 
         return $this->articleOutputDataTransformer->transformFromEntity($article);
     }

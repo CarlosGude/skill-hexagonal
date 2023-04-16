@@ -81,7 +81,7 @@ class PostControllerTest extends KernelTestCase
         $request->expects($this->any())->method('toArray')
             ->willReturn(['title' => 'TITLE', 'body' => 'BODY', 'author' => 'uuid']);
 
-        $response = $this->postController->post($this->postArticleUseCase,$request,false,false);
+        $response = $this->postController->post($this->postArticleUseCase, $request, false, false);
         $array = json_decode((string) $response->getContent(), true);
         $this->assertIsArray($array);
         $this->assertIsString($array['title']);
@@ -96,11 +96,11 @@ class PostControllerTest extends KernelTestCase
         $request->expects($this->any())->method('toArray')
             ->willReturn(['title' => null, 'body' => 'BODY', 'author' => 'uuid']);
 
-        $response = $this->postController->post($this->postArticleUseCase,$request,false,false);
-        $this->assertEquals(HttpCode::HTTP_BAD_REQUEST,$response->getStatusCode());
+        $response = $this->postController->post($this->postArticleUseCase, $request, false, false);
+        $this->assertEquals(HttpCode::HTTP_BAD_REQUEST, $response->getStatusCode());
         $array = json_decode((string) $response->getContent(), true);
         $this->assertIsArray($array);
-        $this->assertEquals(AbstractValidator::VALUE_NULL,$array['title']);
+        $this->assertEquals(AbstractValidator::VALUE_NULL, $array['title']);
     }
 
     public function testErrorBodyNull(): void
@@ -110,11 +110,11 @@ class PostControllerTest extends KernelTestCase
         $request->expects($this->any())->method('toArray')
             ->willReturn(['title' => 'TITLE', 'body' => null, 'author' => 'uuid']);
 
-        $response = $this->postController->post($this->postArticleUseCase,$request,false,false);
-        $this->assertEquals(HttpCode::HTTP_BAD_REQUEST,$response->getStatusCode());
+        $response = $this->postController->post($this->postArticleUseCase, $request, false, false);
+        $this->assertEquals(HttpCode::HTTP_BAD_REQUEST, $response->getStatusCode());
         $array = json_decode((string) $response->getContent(), true);
         $this->assertIsArray($array);
-        $this->assertEquals(AbstractValidator::VALUE_NULL,$array['body']);
+        $this->assertEquals(AbstractValidator::VALUE_NULL, $array['body']);
     }
 
     public function testErrorAuthorNull(): void
@@ -124,10 +124,10 @@ class PostControllerTest extends KernelTestCase
         $request->expects($this->any())->method('toArray')
             ->willReturn(['title' => 'TITLE', 'body' => 'BODY', 'author' => 'NO_EXIST_UUID']);
 
-        $response = $this->postController->post($this->postArticleUseCase,$request,false,false);
-        $this->assertEquals(HttpCode::HTTP_BAD_REQUEST,$response->getStatusCode());
+        $response = $this->postController->post($this->postArticleUseCase, $request, false, false);
+        $this->assertEquals(HttpCode::HTTP_BAD_REQUEST, $response->getStatusCode());
         $array = json_decode((string) $response->getContent(), true);
         $this->assertIsArray($array);
-        $this->assertEquals(Validation::AUTHOR_NOT_FOUND,$array['author']);
+        $this->assertEquals(Validation::AUTHOR_NOT_FOUND, $array['author']);
     }
 }

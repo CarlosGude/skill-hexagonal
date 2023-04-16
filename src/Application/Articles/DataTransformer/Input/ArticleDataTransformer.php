@@ -36,6 +36,7 @@ class ArticleDataTransformer extends AbstractDataTransformer
 
         if (!$request['author']) {
             $errors['author'] = Validation::VALUE_NULL;
+
             return $errors;
         }
 
@@ -44,6 +45,7 @@ class ArticleDataTransformer extends AbstractDataTransformer
 
         if (!$authorEntity) {
             $errors['author'] = Validation::AUTHOR_NOT_FOUND;
+
             return $errors;
         }
 

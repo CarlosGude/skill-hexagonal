@@ -10,6 +10,7 @@ use App\Application\Authors\Dto\Output\AuthorDto;
 class Validation extends AbstractValidator
 {
     public const AUTHOR_NOT_FOUND = 'Author not found';
+
     /**
      * @param ArticleDto $dto
      *

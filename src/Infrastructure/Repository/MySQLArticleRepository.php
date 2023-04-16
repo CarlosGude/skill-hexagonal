@@ -16,11 +16,11 @@ class MySQLArticleRepository extends ServiceEntityRepository implements ArticleR
 
     public function save(Article $entity, bool $persist = false, bool $flush = false): void
     {
-        if($persist){
+        if ($persist) {
             $this->getEntityManager()->persist($entity);
         }
 
-        if($flush){
+        if ($flush) {
             $this->getEntityManager()->flush();
         }
     }
