@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Infrastructure;
+namespace App\Tests\Infrastructure\Article;
 
 use App\Application\Articles\DataTransformer\Output\ArticleDataTransformer;
 use App\Application\Articles\UseCase\GetArticleUseCase;
@@ -12,7 +12,7 @@ use App\Infrastructure\Repository\MySQLAuthorRepository;
 use App\Tests\Aplication\Article\ArticleGetTest;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class GetArticleControllerTest extends KernelTestCase
+class GetControllerTest extends KernelTestCase
 {
     protected MySQLAuthorRepository $authorRepositoryMock;
     protected GetController $getController;

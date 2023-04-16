@@ -26,17 +26,19 @@ class PostArticleUseCase
      *
      * @throws DtoValidationException|BodyRequestException
      */
-    public function post(array $request, bool $flush = false): DtoInterface
+    public function post(array $request, bool $persist = false, bool $flush = false): DtoInterface
     {
-        /** @var ArticleInputDto $dto */
         $dto = $this->articleInputDataTransformer->requestToDto($request);
+        if (!$dto instanceof ArticleInputDto) {
+            throw (new DtoValidationException())->setErrors($dto);
+        }
 
         if (!empty($errors = $this->validation->validate($dto))) {
             throw (new DtoValidationException())->setErrors($errors);
         }
 
         $article = $this->articleInputDataTransformer->dtoToEntity($dto);
-        $this->articleRepository->put($article, $flush);
+        $this->articleRepository->post($article,$persist, $flush);
 
         return $this->articleOutputDataTransformer->transformFromEntity($article);
     }

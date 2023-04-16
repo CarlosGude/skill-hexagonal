@@ -16,8 +16,13 @@ class MySQLArticleRepository extends ServiceEntityRepository implements ArticleR
 
     public function save(Article $entity, bool $persist = false, bool $flush = false): void
     {
-        $persist && $this->getEntityManager()->persist($entity);
-        $flush && $this->getEntityManager()->flush();
+        if($persist){
+            $this->getEntityManager()->persist($entity);
+        }
+
+        if($flush){
+            $this->getEntityManager()->flush();
+        }
     }
 
     public function remove(Article $entity, bool $flush = false): void
@@ -45,7 +50,7 @@ class MySQLArticleRepository extends ServiceEntityRepository implements ArticleR
     /**
      * @throws \Exception
      */
-    public function put(Article $article, bool $persist = false, bool $flush = false): void
+    public function post(Article $article, bool $persist = false, bool $flush = false): void
     {
         $this->save($article, $persist, $flush);
     }

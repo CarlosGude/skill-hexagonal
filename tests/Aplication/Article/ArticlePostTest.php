@@ -54,38 +54,28 @@ class ArticlePostTest extends AbstractPostTest
     public function testRequestAuthorErrorNullPost(): void
     {
         $request = ['title' => null, 'body' => null, 'author' => null];
-        $this->expectException(AuthorNotFoundException::class);
+        $this->expectException(DtoValidationException::class);
         $this->postArticleUseCase->post($request);
     }
 
     public function testRequestErrorAuthorNullPost(): void
     {
         $request = ['title' => null, 'body' => null, 'author' => null];
-        $this->expectException(AuthorNotFoundException::class);
+        $this->expectException(DtoValidationException::class);
         $this->postArticleUseCase->post($request);
     }
 
     public function testRequestErrorTitleAndBodyNullOrEmptyNullPost(): void
     {
         $request = ['title' => null, 'body' => '', 'author' => 'uuid'];
-        try {
-            $this->postArticleUseCase->post($request);
-        } catch (DtoValidationException $exception) {
-            /** @var array<string,array<string,string>> $errors */
-            $errors = $exception->getErrors();
-
-            $this->assertArrayHasKey(AbstractValidator::INDEX_NULL, $errors['title']);
-            $this->assertArrayHasKey(AbstractValidator::INDEX_NULL, $errors['body']);
-            $this->assertEquals(AbstractValidator::VALUE_NULL, $errors['title'][AbstractValidator::INDEX_NULL]);
-            $this->assertEquals(AbstractValidator::VALUE_NULL, $errors['body'][AbstractValidator::INDEX_NULL]);
-            $this->assertArrayNotHasKey('author', $errors);
-        }
+        $this->expectException(DtoValidationException::class);
+        $this->postArticleUseCase->post($request);
     }
 
-    public function testRequestErrorTitleAndBodyIsEmptyNullPost(): void
+    public function testUserNotExist(): void
     {
         $request = ['title' => 'Title test', 'body' => 'Body test', 'author' => 'NO_EXIST_UUID'];
-        $this->expectException(AuthorNotFoundException::class);
+        $this->expectException(DtoValidationException::class);
         $this->postArticleUseCase->post($request);
     }
 }

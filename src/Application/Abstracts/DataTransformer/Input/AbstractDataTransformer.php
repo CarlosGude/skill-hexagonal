@@ -9,5 +9,5 @@ abstract class AbstractDataTransformer
     /**
      * @param array<string, string> $request
      */
-    abstract public function requestToDto(array $request): DtoInterface;
+    abstract public function requestToDto(array $request): array|DtoInterface;
 }

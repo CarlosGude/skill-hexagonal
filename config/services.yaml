@@ -35,3 +35,6 @@ services:
         arguments:
             - $authorRepository: '@App\Infrastructure\Repository\MySQLAuthorRepository'
 
+    App\Application\Articles\DataTransformer\Input\ArticleDataTransformer:
+        public: true
+

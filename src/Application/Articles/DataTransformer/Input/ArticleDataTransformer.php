@@ -5,6 +5,7 @@ namespace App\Application\Articles\DataTransformer\Input;
 use App\Application\Abstracts\DataTransformer\Input\AbstractDataTransformer;
 use App\Application\Abstracts\Interfaces\Input\DtoInterface;
 use App\Application\Articles\Dto\Input\ArticleDto;
+use App\Application\Articles\Validation;
 use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Exceptions\AuthorNotFoundException;
@@ -27,21 +28,23 @@ class ArticleDataTransformer extends AbstractDataTransformer
      * @throws BodyRequestException
      * @throws AuthorNotFoundException
      */
-    public function requestToDto(array $request): DtoInterface
+    public function requestToDto(array $request): array|DtoInterface
     {
         if (array_keys($request) != ['title', 'body', 'author']) {
             throw new BodyRequestException();
         }
 
         if (!$request['author']) {
-            throw new AuthorNotFoundException();
+            $errors['author'] = Validation::VALUE_NULL;
+            return $errors;
         }
 
         /** @var Author|null $authorEntity */
         $authorEntity = $this->authorRepository->getOne($request['author']);
 
         if (!$authorEntity) {
-            throw new AuthorNotFoundException();
+            $errors['author'] = Validation::AUTHOR_NOT_FOUND;
+            return $errors;
         }
 
         /** @var AuthorDto $author */

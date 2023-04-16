@@ -17,5 +17,5 @@ interface ArticleRepositoryInterface
 
     public function getOne(string $uuid): ?Article;
 
-    public function put(Article $article, bool $persist = false, bool $flush = false): void;
+    public function post(Article $article, bool $persist = false, bool $flush = false): void;
 }
