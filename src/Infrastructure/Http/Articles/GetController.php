@@ -8,7 +8,6 @@ use App\Application\Exceptions\ArticleNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -53,7 +52,7 @@ class GetController extends AbstractController
             throw new NotFoundHttpException($exception->getMessage());
         }
 
-        $response = new Response($this->serializer->serialize($data,'json'));
+        $response = new Response($this->serializer->serialize($data, 'json'));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;

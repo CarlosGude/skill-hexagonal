@@ -55,9 +55,9 @@ class GetArticleControllerTest extends KernelTestCase
     public function testArrayOfArticle(): void
     {
         $response = $this->getController->get($this->getArticleUseCase);
-        $array = json_decode((string)$response->getContent(),true);
+        $array = json_decode((string) $response->getContent(), true);
         $this->assertIsArray($array);
-        $this->assertGreaterThan(0,$array);
+        $this->assertGreaterThan(0, $array);
         $this->assertIsString($array[0]['title']);
         $this->assertIsString($array[0]['body']);
         $this->assertIsArray($array[0]['author']);
@@ -65,13 +65,11 @@ class GetArticleControllerTest extends KernelTestCase
 
     public function testArticle(): void
     {
-        $response = $this->getOneController->getOne($this->getArticleUseCase,'uuid');
-        $array = json_decode((string)$response->getContent(),true);
+        $response = $this->getOneController->getOne($this->getArticleUseCase, 'uuid');
+        $array = json_decode((string) $response->getContent(), true);
         $this->assertIsArray($array);
         $this->assertIsString($array['title']);
         $this->assertIsString($array['body']);
         $this->assertIsArray($array['author']);
     }
-
-
 }
