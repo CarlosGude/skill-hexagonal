@@ -6,9 +6,7 @@ use App\Application\Abstracts\Interfaces\Output\DtoInterface;
 use App\Application\Articles\DataTransformer\Input\ArticleDataTransformer as ArticleInputDataTransformer;
 use App\Application\Articles\DataTransformer\Output\ArticleDataTransformer as ArticleOutputDataTransformer;
 use App\Application\Articles\Dto\Input\ArticleDto;
-use App\Application\Articles\Dto\Input\ArticleDto as ArticleInputDto;
 use App\Application\Articles\Validation;
-use App\Application\Exceptions\BodyRequestException;
 use App\Application\Exceptions\DtoValidationException;
 use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
 
