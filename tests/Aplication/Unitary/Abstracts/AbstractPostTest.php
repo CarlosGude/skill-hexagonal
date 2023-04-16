@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Unitary\Abstracts;
+namespace App\Tests\Aplication\Unitary\Abstracts;
 
 use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
 use App\Infrastructure\Repository\MySQLArticleRepository;
 use App\Infrastructure\Repository\MySQLAuthorRepository;
-use App\Tests\Unitary\Author\AuthorGetTest;
+use App\Tests\Aplication\Unitary\Author\AuthorGetTest;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class AbstractPostTest extends KernelTestCase

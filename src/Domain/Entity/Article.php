@@ -3,6 +3,7 @@
 namespace App\Domain\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="Article")
@@ -14,12 +15,14 @@ class Article extends AbstractEntity
     /**
      * @ORM\Column(name="title", type="string", length=150, nullable=false)
      */
-    protected string $title;
+    #[Assert\NotBlank]
+    protected ?string $title;
 
     /**
      * @ORM\Column(name="body", type="text", nullable=false)
      */
-    protected string $body;
+    #[Assert\NotBlank]
+    protected ?string $body;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Domain\Entity\Author", inversedBy="articles")
@@ -34,31 +37,31 @@ class Article extends AbstractEntity
         $this->author = $author;
     }
 
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): Article
+    public function setTitle(?string $title): Article
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getBody(): string
+    public function getBody(): ?string
     {
         return $this->body;
     }
 
-    public function setBody(string $body): Article
+    public function setBody(?string $body): Article
     {
         $this->body = $body;
 
         return $this;
     }
 
-    public function getAuthor(): Author
+    public function getAuthor(): ?Author
     {
         return $this->author;
     }

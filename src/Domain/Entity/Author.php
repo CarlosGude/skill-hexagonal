@@ -5,6 +5,7 @@ namespace App\Domain\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="Author")
@@ -16,12 +17,15 @@ class Author extends AbstractEntity
     /**
      * @ORM\Column(name="emil", type="text", nullable=false)
      */
-    protected string $email;
+    #[Assert\NotBlank]
+    #[Assert\Email]
+    protected ?string $email;
 
     /**
      * @ORM\Column(name="name", type="text", nullable=false)
      */
-    protected string $name;
+    #[Assert\NotBlank]
+    protected ?string $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Domain\Entity\Article",orphanRemoval=true, mappedBy="author")
@@ -34,24 +38,24 @@ class Author extends AbstractEntity
         $this->articles = new ArrayCollection();
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): Author
+    public function setEmail(?string $email): Author
     {
         $this->email = $email;
 
         return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $name): Author
+    public function setName(?string $name): Author
     {
         $this->name = $name;
 

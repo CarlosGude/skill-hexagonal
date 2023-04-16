@@ -20,8 +20,8 @@ class AuthorDataTransformer extends AbstractDataTransformer
 
         return new AuthorDto(
             uuid: $data->getUuid(),
-            name: $data->getName(),
-            email: $data->getEmail(),
+            name: (string) $data->getName(),
+            email: (string) $data->getEmail(),
             createdAt: $data->getCreatedAt(),
             articlesEntity: $articles
         );

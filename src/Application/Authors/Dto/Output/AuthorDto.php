@@ -40,8 +40,8 @@ class AuthorDto implements DtoInterface
     {
         $this->articles[] = new ArticleDto(
             uuid: $article->getUuid(),
-            title: $article->getTitle(),
-            body: $article->getBody(),
+            title: (string) $article->getTitle(),
+            body: (string) $article->getBody(),
             createdAt: $article->getCreatedAt(),
         );
     }
