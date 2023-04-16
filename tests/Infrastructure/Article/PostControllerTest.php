@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 class PostControllerTest extends KernelTestCase
 {
     protected MySQLAuthorRepository $authorRepositoryMock;
-
+    protected MySQLArticleRepository $articleRepositoryMock;
     protected PostController $postController;
     protected PostArticleUseCase $postArticleUseCase;
 
@@ -37,21 +37,25 @@ class PostControllerTest extends KernelTestCase
         $articles = AbstractPostTest::generateMockArticles();
         $authors = AuthorGetTest::generateMockUsers();
 
-        $this->articleRepositoryMock = $this->getMockBuilder(MySQLArticleRepository::class)
+        /** @var MySQLArticleRepository $articleRepositoryMock */
+        $articleRepositoryMock = $this->getMockBuilder(MySQLArticleRepository::class)
             ->onlyMethods(['getAll', 'getOne'])
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->authorRepositoryMock = $this->createMock(MySQLAuthorRepository::class);
 
-        $this->authorRepositoryMock->expects($this->any())->method('getAll')->willReturn($authors);
+        $authorRepositoryMock = $this->createMock(MySQLAuthorRepository::class);
+
+        $authorRepositoryMock->expects($this->any())->method('getAll')->willReturn($authors);
 
         // Mocks User response
-        $this->authorRepositoryMock->expects($this->any())->method('getOne')
+        $authorRepositoryMock->expects($this->any())->method('getOne')
             ->willReturnCallback(fn (string $value) => match (true) {
                 'NO_EXIST_UUID' === $value => null,
                 default => $authors[0]
             });
+
+        $this->articleRepositoryMock = $this->createMock(MySQLArticleRepository::class);
 
         // Mocks an array of user Response
         $this->articleRepositoryMock->expects($this->any())->method('getAll')->willReturn($articles);
@@ -64,12 +68,13 @@ class PostControllerTest extends KernelTestCase
             });
 
         $this->postArticleUseCase = new PostArticleUseCase(
-            articleInputDataTransformer: new InputArticleDataTransformer($this->authorRepositoryMock, new AuthorDataTransformer()),
+            articleInputDataTransformer: new InputArticleDataTransformer($authorRepositoryMock, new AuthorDataTransformer()),
             articleOutputDataTransformer: new OutputArticleDataTransformer(new AuthorDataTransformer()),
-            articleRepository: $this->articleRepositoryMock,
+            articleRepository: $articleRepositoryMock,
             validation: new Validation()
         );
 
+        /** @var PostController $postController */
         $postController = $container->get(PostController::class);
         $this->postController = $postController;
     }

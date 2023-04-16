@@ -8,6 +8,8 @@ abstract class AbstractDataTransformer
 {
     /**
      * @param array<string, string> $request
+     *
+     * @return array<string, string>|DtoInterface
      */
     abstract public function requestToDto(array $request): array|DtoInterface;
 }

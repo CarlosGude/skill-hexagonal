@@ -9,7 +9,7 @@ abstract class AbstractValidator
     public const VALUE_NULL = 'This value can not be null or empty.';
 
     /**
-     * @return array<string, array<string, string>>
+     * @return array<string, string>>
      */
     abstract public function validate(DtoInterface $dto): array;
 }

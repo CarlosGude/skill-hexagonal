@@ -4,11 +4,11 @@ namespace App\Application\Exceptions;
 
 class DtoValidationException extends \Exception
 {
-    /** @var array<string,array<string,string>> */
+    /** @var array<string,string>> */
     protected array $errors;
 
     /**
-     * @return array<string,array<string,string>>
+     * @return array<string,string>>
      */
     public function getErrors(): array
     {
@@ -16,7 +16,7 @@ class DtoValidationException extends \Exception
     }
 
     /**
-     * @param array<string,array<string,string>> $errors
+     * @param array<string,string> $errors
      *
      * @return $this
      */

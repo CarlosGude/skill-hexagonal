@@ -14,7 +14,7 @@ class Validation extends AbstractValidator
     /**
      * @param ArticleDto $dto
      *
-     * @return array<string, array<string, string>>
+     * @return array<string, string>>
      */
     public function validate(DtoInterface $dto): array
     {

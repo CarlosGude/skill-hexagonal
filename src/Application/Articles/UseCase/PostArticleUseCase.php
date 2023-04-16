@@ -5,6 +5,7 @@ namespace App\Application\Articles\UseCase;
 use App\Application\Abstracts\Interfaces\Output\DtoInterface;
 use App\Application\Articles\DataTransformer\Input\ArticleDataTransformer as ArticleInputDataTransformer;
 use App\Application\Articles\DataTransformer\Output\ArticleDataTransformer as ArticleOutputDataTransformer;
+use App\Application\Articles\Dto\Input\ArticleDto;
 use App\Application\Articles\Dto\Input\ArticleDto as ArticleInputDto;
 use App\Application\Articles\Validation;
 use App\Application\Exceptions\BodyRequestException;
@@ -24,12 +25,13 @@ class PostArticleUseCase
     /**
      * @param array<string, string|null> $request
      *
-     * @throws DtoValidationException|BodyRequestException
+     * @throws DtoValidationException
      */
     public function post(array $request, bool $persist = false, bool $flush = false): DtoInterface
     {
+        /** @var array<string, string>|ArticleDto $dto */
         $dto = $this->articleInputDataTransformer->requestToDto($request);
-        if (!$dto instanceof ArticleInputDto) {
+        if (is_array($dto)) {
             throw (new DtoValidationException())->setErrors($dto);
         }
 
