@@ -27,4 +27,4 @@ To install this project, follow these steps:
 
 The testing of projects follows the same patron, each layer is tested separated, without using a database. Actually, we have 30 tests, and the execution time is lower than a second.
 
-We use mocks class for the repositories, because the persis is not important if the data validation is correct, the database in this environment is unnecessary.
+We use mocks class for the repositories, because the persist is not important if the data validation is correct, the database in this environment is unnecessary.
