@@ -2,10 +2,12 @@
 
 namespace App\Domain;
 
+use Exception;
+
 class GenerateUuid
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public static function generate(?string $data = null): string
     {

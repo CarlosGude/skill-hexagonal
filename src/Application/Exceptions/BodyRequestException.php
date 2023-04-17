@@ -2,6 +2,8 @@
 
 namespace App\Application\Exceptions;
 
-class BodyRequestException extends \Exception
+use Exception;
+
+class BodyRequestException extends Exception
 {
 }

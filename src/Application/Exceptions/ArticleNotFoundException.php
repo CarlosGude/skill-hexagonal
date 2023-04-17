@@ -2,6 +2,8 @@
 
 namespace App\Application\Exceptions;
 
-class ArticleNotFoundException extends \Exception
+use Exception;
+
+class ArticleNotFoundException extends Exception
 {
 }

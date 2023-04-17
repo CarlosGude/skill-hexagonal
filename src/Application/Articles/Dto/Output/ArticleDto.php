@@ -4,6 +4,7 @@ namespace App\Application\Articles\Dto\Output;
 
 use App\Application\Abstracts\Interfaces\Output\DtoInterface;
 use App\Application\Authors\Dto\Output\AuthorDto;
+use DateTime;
 
 class ArticleDto implements DtoInterface
 {
@@ -11,7 +12,7 @@ class ArticleDto implements DtoInterface
         protected readonly string $uuid,
         protected readonly string $title,
         protected readonly string $body,
-        protected readonly \DateTime $createdAt,
+        protected readonly DateTime $createdAt,
         protected readonly ?AuthorDto $author = null,
     ) {
     }
@@ -36,7 +37,7 @@ class ArticleDto implements DtoInterface
         return $this->author;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }

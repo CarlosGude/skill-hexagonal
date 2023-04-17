@@ -2,6 +2,8 @@
 
 namespace App\Application\Exceptions;
 
-class AuthorNotFoundException extends \Exception
+use Exception;
+
+class AuthorNotFoundException extends Exception
 {
 }

@@ -2,7 +2,9 @@
 
 namespace App\Application\Exceptions;
 
-class DtoValidationException extends \Exception
+use Exception;
+
+class DtoValidationException extends Exception
 {
     /** @var array<string,string>> */
     protected array $errors;

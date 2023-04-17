@@ -12,6 +12,7 @@ use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Exceptions\BodyRequestException;
 use App\Application\Exceptions\DtoValidationException;
 use App\Tests\Aplication\Abstracts\AbstractPostTest;
+use Exception;
 use Psr\Log\LoggerInterface;
 
 class ArticlePostTest extends AbstractPostTest
@@ -49,7 +50,7 @@ class ArticlePostTest extends AbstractPostTest
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function testErrorPost(): void
     {

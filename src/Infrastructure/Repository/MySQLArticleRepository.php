@@ -6,6 +6,7 @@ use App\Domain\Entity\Article;
 use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 class MySQLArticleRepository extends ServiceEntityRepository implements ArticleRepositoryInterface
 {
@@ -48,7 +49,7 @@ class MySQLArticleRepository extends ServiceEntityRepository implements ArticleR
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function post(Article $article, bool $persist = false, bool $flush = false): void
     {
