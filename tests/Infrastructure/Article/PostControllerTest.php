@@ -38,8 +38,10 @@ class PostControllerTest extends AbstractTest
 
         $this->postArticleUseCase = new PostArticleUseCase(
             articleInputDataTransformer: new InputArticleDataTransformer(
-                $this->authorRepository, new AuthorDataTransformer(),
-                $logger
+                articleRepository: $this->articleRepository,
+                authorRepository: $this->authorRepository,
+                authorDataTransformer: new AuthorDataTransformer(),
+                logger: $logger
             ),
             articleOutputDataTransformer: new OutputArticleDataTransformer(new AuthorDataTransformer()),
             articleRepository: $this->articleRepository,

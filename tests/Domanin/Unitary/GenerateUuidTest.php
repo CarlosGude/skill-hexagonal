@@ -3,13 +3,12 @@
 namespace App\Tests\Domanin\Unitary;
 
 use App\Domain\GenerateUuid;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class GenerateUuidTest extends KernelTestCase
 {
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function validateUuid(): void
     {

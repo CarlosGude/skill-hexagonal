@@ -37,6 +37,11 @@ class AbstractTest extends KernelTestCase
                 default => $articles[0]
             });
 
+        $this->articleRepository->expects($this->any())->method('create')
+            ->willReturnCallback(fn (Author $value) => match (true) {
+                default => new Article($value)
+            });
+
         $authors = self::generateMockAuthors();
         $this->authorRepository = $this->createMock(MySQLAuthorRepository::class);
 

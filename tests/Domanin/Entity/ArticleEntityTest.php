@@ -4,7 +4,6 @@ namespace App\Tests\Domanin\Entity;
 
 use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -14,7 +13,7 @@ class ArticleEntityTest extends KernelTestCase
     protected ValidatorInterface $validation;
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     protected function setUp(): void
     {

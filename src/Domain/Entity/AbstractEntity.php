@@ -27,17 +27,17 @@ abstract class AbstractEntity
     /**
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    protected DateTime $createdAt;
+    protected \DateTime $createdAt;
 
     /**
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
-    protected DateTime $updatedAt;
+    protected \DateTime $updatedAt;
 
     public function __construct()
     {
-        $this->createdAt = new DateTime();
-        $this->updatedAt = new DateTime();
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         $this->uuid = GenerateUuid::generate();
     }
 
@@ -51,19 +51,19 @@ abstract class AbstractEntity
         return $this->uuid;
     }
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): DateTime
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
     public function setUpdatedAt(): AbstractEntity
     {
-        $this->updatedAt = new DateTime();
+        $this->updatedAt = new \DateTime();
 
         return $this;
     }

@@ -12,7 +12,6 @@ use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Exceptions\BodyRequestException;
 use App\Application\Exceptions\DtoValidationException;
 use App\Tests\Aplication\Abstracts\AbstractPostTest;
-use Exception;
 use Psr\Log\LoggerInterface;
 
 class ArticlePostTest extends AbstractPostTest
@@ -27,9 +26,10 @@ class ArticlePostTest extends AbstractPostTest
         $logger = $this->container->get(LoggerInterface::class);
         $this->postArticleUseCase = new PostArticleUseCase(
             articleInputDataTransformer: new InputArticleDataTransformer(
-                $this->authorRepositoryMock,
-                new AuthorDataTransformer(),
-                $logger
+                articleRepository: $this->articleRepositoryMock,
+                authorRepository: $this->authorRepositoryMock,
+                authorDataTransformer: new AuthorDataTransformer(),
+                logger: $logger
             ),
             articleOutputDataTransformer: new OutputArticleDataTransformer(new AuthorDataTransformer()),
             articleRepository: $this->articleRepositoryMock,
@@ -50,7 +50,7 @@ class ArticlePostTest extends AbstractPostTest
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function testErrorPost(): void
     {

@@ -14,12 +14,14 @@ use App\Application\Exceptions\DtoException;
 use App\Application\Logger\ApplicationLogger;
 use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
+use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
 use App\Infrastructure\Interfaces\AuthorRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 class ArticleDataTransformer extends AbstractDataTransformer
 {
     public function __construct(
+        protected readonly ArticleRepositoryInterface $articleRepository,
         protected readonly AuthorRepositoryInterface $authorRepository,
         protected readonly AuthorDataTransformer $authorDataTransformer,
         protected readonly LoggerInterface $logger
@@ -76,7 +78,7 @@ class ArticleDataTransformer extends AbstractDataTransformer
 
         /** @var Author $authorEntity */
         $authorEntity = $this->authorRepository->getOne($authorDto->getUuid());
-        $article = new Article($authorEntity);
+        $article = $this->articleRepository->create($authorEntity);
         $article->setTitle((string) $dto->getTitle());
         $article->setBody((string) $dto->getBody());
 
