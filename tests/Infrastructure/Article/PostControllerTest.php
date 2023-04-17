@@ -13,6 +13,7 @@ use App\Infrastructure\Http\HttpCode;
 use App\Infrastructure\Repository\MySQLArticleRepository;
 use App\Infrastructure\Repository\MySQLAuthorRepository;
 use App\Tests\Infrastructure\AbstractTest;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -31,11 +32,19 @@ class PostControllerTest extends AbstractTest
     protected function setUp(): void
     {
         parent::setUp();
+
+        /** @var LoggerInterface $logger */
+        $logger = $this->container->get(LoggerInterface::class);
+
         $this->postArticleUseCase = new PostArticleUseCase(
-            articleInputDataTransformer: new InputArticleDataTransformer($this->authorRepository, new AuthorDataTransformer()),
+            articleInputDataTransformer: new InputArticleDataTransformer(
+                $this->authorRepository, new AuthorDataTransformer(),
+                $logger
+            ),
             articleOutputDataTransformer: new OutputArticleDataTransformer(new AuthorDataTransformer()),
             articleRepository: $this->articleRepository,
-            validation: new Validation()
+            validation: new Validation(),
+            logger: $logger
         );
 
         /** @var PostController $postController */

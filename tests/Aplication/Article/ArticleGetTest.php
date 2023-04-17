@@ -9,6 +9,7 @@ use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Exceptions\ArticleNotFoundException;
 use App\Tests\Aplication\Abstracts\AbstractGetTest;
+use Psr\Log\LoggerInterface;
 
 class ArticleGetTest extends AbstractGetTest
 {
@@ -17,9 +18,12 @@ class ArticleGetTest extends AbstractGetTest
     public function setUp(): void
     {
         parent::setUp();
+        /** @var LoggerInterface $logger */
+        $logger = $this->container->get(LoggerInterface::class);
         $this->getArticleUseCase = new GetArticleUseCase(
             articleRepository: $this->articleRepository,
-            transformer: new ArticleDataTransformer(new AuthorDataTransformer())
+            transformer: new ArticleDataTransformer(new AuthorDataTransformer()),
+            logger: $logger
         );
     }
 

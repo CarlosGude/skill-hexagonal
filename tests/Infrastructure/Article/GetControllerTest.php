@@ -8,6 +8,7 @@ use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Infrastructure\Http\Articles\GetController;
 use App\Infrastructure\Http\Articles\GetOneController;
 use App\Tests\Infrastructure\AbstractTest;
+use Psr\Log\LoggerInterface;
 
 class GetControllerTest extends AbstractTest
 {
@@ -18,6 +19,9 @@ class GetControllerTest extends AbstractTest
     protected function setUp(): void
     {
         parent::setUp();
+        /** @var LoggerInterface $logger */
+        $logger = $this->container->get(LoggerInterface::class);
+
         /** @var GetController $getController */
         $getController = $this->container->get(GetController::class);
 
@@ -29,7 +33,8 @@ class GetControllerTest extends AbstractTest
 
         $this->getArticleUseCase = new GetArticleUseCase(
             articleRepository: $this->articleRepository,
-            transformer: new ArticleDataTransformer(new AuthorDataTransformer())
+            transformer: new ArticleDataTransformer(new AuthorDataTransformer()),
+            logger: $logger
         );
     }
 

@@ -7,11 +7,13 @@ use App\Domain\Entity\Author;
 use App\Infrastructure\Repository\MySQLArticleRepository;
 use App\Infrastructure\Repository\MySQLAuthorRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class AbstractPostTest extends KernelTestCase
 {
     protected MySQLArticleRepository $articleRepositoryMock;
     protected MySQLAuthorRepository $authorRepositoryMock;
+    protected ContainerInterface $container;
 
     /**
      * @return array <int, Article>
@@ -61,6 +63,8 @@ abstract class AbstractPostTest extends KernelTestCase
     {
         $articles = self::generateMockArticles();
         $authors = self::generateMockAuthors();
+
+        $this->container = static::getContainer();
 
         $this->articleRepositoryMock = $this->getMockBuilder(MySQLArticleRepository::class)
             ->onlyMethods(['getAll', 'getOne'])

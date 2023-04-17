@@ -5,14 +5,17 @@ namespace App\Application\Articles\UseCase;
 use App\Application\Abstracts\Interfaces\Output\DtoInterface;
 use App\Application\Articles\DataTransformer\Output\ArticleDataTransformer;
 use App\Application\Exceptions\ArticleNotFoundException;
+use App\Application\Logger\ApplicationLogger;
 use App\Domain\Entity\Article;
 use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
+use Psr\Log\LoggerInterface;
 
 final class GetArticleUseCase
 {
     public function __construct(
         protected readonly ArticleRepositoryInterface $articleRepository,
-        protected readonly ArticleDataTransformer $transformer
+        protected readonly ArticleDataTransformer $transformer,
+        protected readonly LoggerInterface $logger
     ) {
     }
 
@@ -25,6 +28,7 @@ final class GetArticleUseCase
     {
         $data = $this->articleRepository->getAll();
         if (empty($data)) {
+            $this->logger->error(ApplicationLogger::ERROR_ARTICLE_NOT_FOUND);
             throw new ArticleNotFoundException();
         }
 
@@ -40,6 +44,7 @@ final class GetArticleUseCase
         $data = $this->articleRepository->getOne($uuid);
 
         if (!$data instanceof Article) {
+            $this->logger->error(ApplicationLogger::ERROR_ARTICLE_NOT_FOUND, ['uuid' => $uuid]);
             throw new ArticleNotFoundException();
         }
 

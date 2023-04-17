@@ -10,15 +10,19 @@ use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Exceptions\AuthorNotFoundException;
 use App\Application\Exceptions\BodyRequestException;
+use App\Application\Exceptions\DtoException;
+use App\Application\Logger\ApplicationLogger;
 use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
 use App\Infrastructure\Interfaces\AuthorRepositoryInterface;
+use Psr\Log\LoggerInterface;
 
 class ArticleDataTransformer extends AbstractDataTransformer
 {
     public function __construct(
-        protected AuthorRepositoryInterface $authorRepository,
-        protected AuthorDataTransformer $authorDataTransformer
+        protected readonly AuthorRepositoryInterface $authorRepository,
+        protected readonly AuthorDataTransformer $authorDataTransformer,
+        protected readonly LoggerInterface $logger
     ) {
     }
 
@@ -31,6 +35,7 @@ class ArticleDataTransformer extends AbstractDataTransformer
     public function requestToDto(array $request): array|DtoInterface
     {
         if (array_keys($request) != ['title', 'body', 'author']) {
+            $this->logger->error(ApplicationLogger::ERROR_BODY_REQUEST, ['request' => $request]);
             throw new BodyRequestException();
         }
 
@@ -45,6 +50,7 @@ class ArticleDataTransformer extends AbstractDataTransformer
 
         if (!$authorEntity) {
             $errors['author'] = Validation::AUTHOR_NOT_FOUND;
+            $this->logger->error(ApplicationLogger::ERROR_AUTHOR_NOT_FOUND, ['author' => $request['author']]);
 
             return $errors;
         }
@@ -64,7 +70,8 @@ class ArticleDataTransformer extends AbstractDataTransformer
         $authorDto = $dto->getAuthor();
 
         if (!$authorDto) {
-            throw new \Exception();
+            $this->logger->error(ApplicationLogger::ERROR_AUTHOR_NOT_FOUND);
+            throw new DtoException();
         }
 
         /** @var Author $authorEntity */

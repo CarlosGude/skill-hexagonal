@@ -8,15 +8,18 @@ use App\Application\Articles\DataTransformer\Output\ArticleDataTransformer as Ar
 use App\Application\Articles\Dto\Input\ArticleDto;
 use App\Application\Articles\Validation;
 use App\Application\Exceptions\DtoValidationException;
+use App\Application\Logger\ApplicationLogger;
 use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
+use Psr\Log\LoggerInterface;
 
 class PostArticleUseCase
 {
     public function __construct(
-        protected ArticleInputDataTransformer $articleInputDataTransformer,
-        protected ArticleOutputDataTransformer $articleOutputDataTransformer,
-        protected ArticleRepositoryInterface $articleRepository,
-        protected Validation $validation
+        protected readonly ArticleInputDataTransformer $articleInputDataTransformer,
+        protected readonly ArticleOutputDataTransformer $articleOutputDataTransformer,
+        protected readonly ArticleRepositoryInterface $articleRepository,
+        protected readonly LoggerInterface $logger,
+        protected readonly Validation $validation
     ) {
     }
 
@@ -30,10 +33,12 @@ class PostArticleUseCase
         /** @var array<string, string>|ArticleDto $dto */
         $dto = $this->articleInputDataTransformer->requestToDto($request);
         if (is_array($dto)) {
+            $this->logger->error(ApplicationLogger::ERROR_ARTICLE_REQUEST_VALIDATION, ['errors' => $dto]);
             throw (new DtoValidationException())->setErrors($dto);
         }
 
         if (!empty($errors = $this->validation->validate($dto))) {
+            $this->logger->error(ApplicationLogger::ERROR_ARTICLE_VALIDATION, ['errors' => $errors]);
             throw (new DtoValidationException())->setErrors($errors);
         }
 
