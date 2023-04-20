@@ -5,4 +5,5 @@ default:
                 - App\Tests\Behat\RequestContext
 
     extensions:
-        FriendsOfBehat\SymfonyExtension: null
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: tests/bootstrap.php

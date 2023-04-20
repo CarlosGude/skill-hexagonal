@@ -21,7 +21,7 @@ final class RequestContext implements Context
     private $kernel;
 
     /** @var Response|null */
-    private $response;
+    private $response = null;
 
     /** @var array<string|int, string> */
     private array $responseContent = [];
@@ -37,6 +37,20 @@ final class RequestContext implements Context
     public function theDemoScenarioSendsARequestTo(string $path): void
     {
         $this->response = $this->kernel->handle(Request::create($path, 'GET'));
+    }
+
+    /**
+     * @Then /^the response code must be (\d+)$/
+     */
+    public function theResponseCodeMustBe(int $responseCode): void
+    {
+        if (!$this->response) {
+            throw new \RuntimeException('Unable to access the response before visiting a page');
+        }
+
+        if ($responseCode !== $this->response->getStatusCode()) {
+            throw new \RuntimeException('The response code expected is '.$responseCode.' but the code is '.$this->response->getStatusCode());
+        }
     }
 
     /**
