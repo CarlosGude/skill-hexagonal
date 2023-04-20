@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Aplication\Article;
+namespace App\Tests\PhpUnitTest\Aplication\Article;
 
 use App\Application\Articles\DataTransformer\Input\ArticleDataTransformer as InputArticleDataTransformer;
 use App\Application\Articles\DataTransformer\Output\ArticleDataTransformer as OutputArticleDataTransformer;
@@ -11,7 +11,7 @@ use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Exceptions\BodyRequestException;
 use App\Application\Exceptions\DtoValidationException;
-use App\Tests\Aplication\Abstracts\AbstractPostTest;
+use App\Tests\PhpUnitTest\Aplication\Abstracts\AbstractPostTest;
 use Psr\Log\LoggerInterface;
 
 class ArticlePostTest extends AbstractPostTest

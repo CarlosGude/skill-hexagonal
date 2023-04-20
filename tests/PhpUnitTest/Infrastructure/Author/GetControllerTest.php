@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Infrastructure\Author;
+namespace App\Tests\PhpUnitTest\Infrastructure\Author;
 
 use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\UseCase\GetAuthorsUseCase;
 use App\Infrastructure\Http\Authors\GetController;
 use App\Infrastructure\Http\Authors\GetOneController;
-use App\Tests\Infrastructure\AbstractTest;
+use App\Tests\PhpUnitTest\Infrastructure\AbstractTest;
 
 class GetControllerTest extends AbstractTest
 {

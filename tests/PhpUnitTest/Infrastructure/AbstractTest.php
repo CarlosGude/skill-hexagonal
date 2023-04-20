@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Infrastructure;
+namespace App\Tests\PhpUnitTest\Infrastructure;
 
 use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
@@ -8,7 +8,7 @@ use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
 use App\Infrastructure\Interfaces\AuthorRepositoryInterface;
 use App\Infrastructure\Repository\MySQLArticleRepository;
 use App\Infrastructure\Repository\MySQLAuthorRepository;
-use App\Tests\Aplication\Article\ArticleGetTest;
+use App\Tests\PhpUnitTest\Aplication\Article\ArticleGetTest;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

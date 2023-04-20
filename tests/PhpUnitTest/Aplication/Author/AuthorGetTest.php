@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Tests\Aplication\Author;
+namespace App\Tests\PhpUnitTest\Aplication\Author;
 
 use App\Application\Articles\Dto\Output\ArticleDto;
 use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Application\Authors\Dto\Output\AuthorDto;
 use App\Application\Authors\UseCase\GetAuthorsUseCase;
 use App\Application\Exceptions\AuthorNotFoundException;
-use App\Tests\Infrastructure\AbstractTest;
+use App\Tests\PhpUnitTest\Infrastructure\AbstractTest;
 
 class AuthorGetTest extends AbstractTest
 {

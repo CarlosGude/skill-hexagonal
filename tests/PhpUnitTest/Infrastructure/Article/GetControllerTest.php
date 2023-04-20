@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Tests\Infrastructure\Article;
+namespace App\Tests\PhpUnitTest\Infrastructure\Article;
 
 use App\Application\Articles\DataTransformer\Output\ArticleDataTransformer;
 use App\Application\Articles\UseCase\GetArticleUseCase;
 use App\Application\Authors\DataTransformer\Output\AuthorDataTransformer;
 use App\Infrastructure\Http\Articles\GetController;
 use App\Infrastructure\Http\Articles\GetOneController;
-use App\Tests\Infrastructure\AbstractTest;
+use App\Tests\PhpUnitTest\Infrastructure\AbstractTest;
 use Psr\Log\LoggerInterface;
 
 class GetControllerTest extends AbstractTest

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Infrastructure\Article;
+namespace App\Tests\PhpUnitTest\Infrastructure\Article;
 
 use App\Application\Abstracts\AbstractValidator;
 use App\Application\Articles\DataTransformer\Input\ArticleDataTransformer as InputArticleDataTransformer;
@@ -12,7 +12,7 @@ use App\Infrastructure\Http\Articles\PostController;
 use App\Infrastructure\Http\HttpCode;
 use App\Infrastructure\Repository\MySQLArticleRepository;
 use App\Infrastructure\Repository\MySQLAuthorRepository;
-use App\Tests\Infrastructure\AbstractTest;
+use App\Tests\PhpUnitTest\Infrastructure\AbstractTest;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;

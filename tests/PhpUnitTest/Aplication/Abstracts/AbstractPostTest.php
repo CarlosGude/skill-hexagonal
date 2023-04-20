@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Tests\Aplication\Abstracts;
+namespace App\Tests\PhpUnitTest\Aplication\Abstracts;
 
 use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
-use App\Infrastructure\Interfaces\ArticleRepositoryInterface;
-use App\Infrastructure\Interfaces\AuthorRepositoryInterface;
 use App\Infrastructure\Repository\MySQLArticleRepository;
 use App\Infrastructure\Repository\MySQLAuthorRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-abstract class AbstractGetTest extends KernelTestCase
+abstract class AbstractPostTest extends KernelTestCase
 {
-    protected ArticleRepositoryInterface $articleRepository;
-    protected AuthorRepositoryInterface $authorRepository;
+    protected MySQLArticleRepository $articleRepositoryMock;
+    protected MySQLAuthorRepository $authorRepositoryMock;
     protected ContainerInterface $container;
 
     /**
@@ -63,37 +61,39 @@ abstract class AbstractGetTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        $articles = $this->generateMockArticles();
-        $this->container = static::getContainer();
-        $this->articleRepository = $this->createMock(MySQLArticleRepository::class);
-
-        // Mocks an array of user Response
-        $this->articleRepository->expects($this->any())->method('getAll')->willReturn($articles);
-
-        // Mocks User response
-        $this->articleRepository->expects($this->any())->method('getOne')
-            ->willReturnCallback(fn (string $value) => match (true) {
-                'NO_EXIST_UUID' === $value => null,
-                default => $articles[array_rand($articles)]
-            });
-
+        $articles = self::generateMockArticles();
         $authors = self::generateMockAuthors();
-        $this->authorRepository = $this->createMock(MySQLAuthorRepository::class);
 
-        // Mocks an array of user Response
-        $this->authorRepository->expects($this->any())->method('getAll')->willReturn($authors);
+        $this->container = static::getContainer();
+
+        $this->articleRepositoryMock = $this->getMockBuilder(MySQLArticleRepository::class)
+            ->onlyMethods(['getAll', 'getOne'])
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->authorRepositoryMock = $this->createMock(MySQLAuthorRepository::class);
+
+        $this->authorRepositoryMock->expects($this->any())->method('getAll')->willReturn($authors);
 
         // Mocks User response
-        $this->authorRepository->expects($this->any())->method('getOne')
+        $this->authorRepositoryMock->expects($this->any())->method('getOne')
             ->willReturnCallback(fn (string $value) => match (true) {
                 'NO_EXIST_UUID' === $value => null,
                 default => $authors[0]
             });
+
+        // Mocks an array of user Response
+        $this->articleRepositoryMock->expects($this->any())->method('getAll')->willReturn($articles);
+
+        // Mocks User response
+        $this->articleRepositoryMock->expects($this->any())->method('getOne')
+            ->willReturnCallback(fn (string $value) => match (true) {
+                'NO_EXIST_UUID' === $value => null,
+                default => $articles[0]
+            });
     }
 
-    abstract public function testGet(): void;
+    abstract public function testSuccessPost(): void;
 
-    abstract public function testGetOne(): void;
-
-    abstract public function testGetNotExist(): void;
+    abstract public function testErrorPost(): void;
 }

@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Tests\Domanin\Entity;
+namespace App\Tests\PhpUnitTest\Domanin\Entity;
 
+use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class AuthorEntityTest extends KernelTestCase
+class ArticleEntityTest extends KernelTestCase
 {
     protected ValidatorInterface $validation;
 
@@ -24,61 +25,69 @@ class AuthorEntityTest extends KernelTestCase
         $this->validation = $validation;
     }
 
-    public function testCreateAuthor(): void
+    public function testCreateArticle(): void
     {
         $author = new Author();
         $author->setName('TEST_NAME');
         $author->setEmail('email@test.com');
 
+        $article = new Article($author);
+        $article->setTitle('TITLE')->setBody('BODY');
+
         $errors = $this->validation->validate($author);
         $this->assertEmpty($errors);
     }
 
-    public function testCreateAuthorWithoutName(): void
+    public function testCreateArticleWithoutTitle(): void
     {
         $author = new Author();
-        $author->setName(null);
+        $author->setName('TEST_NAME');
         $author->setEmail('email@test.com');
 
-        $errors = $this->validation->validate($author);
+        $article = new Article($author);
+        $article->setTitle(null)->setBody('BODY');
+
+        $errors = $this->validation->validate($article);
         $this->assertNotEmpty($errors);
 
         /** @var ConstraintViolation $error */
         foreach ($errors as $error) {
-            $this->assertEquals('name', $error->getPropertyPath());
+            $this->assertEquals('title', $error->getPropertyPath());
             $this->assertEquals('This value should not be blank.', $error->getMessage());
         }
     }
 
-    public function testCreateAuthorWithoutEmail(): void
+    public function testCreateArticleWithoutBody(): void
     {
         $author = new Author();
-        $author->setName('test');
-        $author->setEmail(null);
+        $author->setName('TEST_NAME');
+        $author->setEmail('email@test.com');
 
-        $errors = $this->validation->validate($author);
+        $article = new Article($author);
+        $article->setTitle('TITLE')->setBody(null);
+
+        $errors = $this->validation->validate($article);
         $this->assertNotEmpty($errors);
 
         /** @var ConstraintViolation $error */
         foreach ($errors as $error) {
-            $this->assertEquals('email', $error->getPropertyPath());
+            $this->assertEquals('body', $error->getPropertyPath());
             $this->assertEquals('This value should not be blank.', $error->getMessage());
         }
     }
 
-    public function testCreateAuthorEmailEmail(): void
+    public function testCreateArticleWithoutAuthor(): void
     {
-        $author = new Author();
-        $author->setName('test');
-        $author->setEmail('NOT_VALID_EMAIL');
+        $article = new Article();
+        $article->setTitle('TITLE')->setBody('body');
 
-        $errors = $this->validation->validate($author);
+        $errors = $this->validation->validate($article);
         $this->assertNotEmpty($errors);
 
         /** @var ConstraintViolation $error */
         foreach ($errors as $error) {
-            $this->assertEquals('email', $error->getPropertyPath());
-            $this->assertEquals('This value is not a valid email address.', $error->getMessage());
+            $this->assertEquals('author', $error->getPropertyPath());
+            $this->assertEquals('This value should not be null.', $error->getMessage());
         }
     }
 }

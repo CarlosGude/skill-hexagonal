@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domanin\Unitary;
+namespace App\Tests\PhpUnitTest\Domanin\Unitary;
 
 use App\Domain\GenerateUuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
