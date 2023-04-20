@@ -8,15 +8,18 @@ use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\ORM\Tools\ToolsException;
 
 final class DatabaseContext implements Context
 {
-    public function __construct(private EntityManagerInterface $entityManager)
+    public function __construct(private readonly EntityManagerInterface $entityManager)
     {
     }
 
     /**
      * @BeforeScenario
+     *
+     * @throws ToolsException
      */
     public function setUpDatabase(): void
     {
