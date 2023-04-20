@@ -17,22 +17,19 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 final class RequestContext implements Context
 {
-    /** @var KernelInterface */
-    private $kernel;
-
-    /** @var Response|null */
-    private $response = null;
+    private ?Response $response = null;
 
     /** @var array<string|int, string> */
     private array $responseContent = [];
 
-    public function __construct(KernelInterface $kernel)
+    public function __construct(private readonly KernelInterface $kernel)
     {
-        $this->kernel = $kernel;
     }
 
     /**
      * @When the demo scenario sends a request to :path
+     *
+     * @throws \Exception
      */
     public function theDemoScenarioSendsARequestTo(string $path): void
     {
