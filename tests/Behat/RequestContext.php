@@ -22,8 +22,9 @@ final class RequestContext implements Context
     /** @var array<string|int, string> */
     private array $responseContent = [];
 
-    public function __construct(private readonly KernelInterface $kernel)
-    {
+    public function __construct(
+        private readonly KernelInterface $kernel
+    ) {
     }
 
     /**
@@ -108,6 +109,61 @@ final class RequestContext implements Context
         }
 
         if (!$functionType($this->responseContent[$keyName])) {
+            throw new \RuntimeException('The value type is not the expected.');
+        }
+    }
+
+    /**
+     * @Then /^the response contains (\d+) or more elements$/
+     */
+    public function theResponseContainsOrMoreElements(int $count): void
+    {
+        if ($count < count($this->responseContent)) {
+            throw new \RuntimeException('The array not have '.$count.' or more elements');
+        }
+    }
+
+    /**
+     * @Then /^the element (\d+) of response must contains the key "([^"]*)"$/
+     */
+    public function theElementOfResponseMustContainsTheKey(int $pos, string $keyName): void
+    {
+        if (!array_key_exists($keyName, (array) $this->responseContent[$pos])) {
+            throw new \RuntimeException('The response not content the key '.$keyName);
+        }
+    }
+
+    /**
+     * @Then /^the element (\d+) of response with the key "([^"]*)" must be an "([^"]*)"$/
+     */
+    public function theElementOfResponseWithTheKeyMustBeAn(int $pos, string $keyName, string $type): void
+    {
+        if (!array_key_exists($pos, $this->responseContent)) {
+            throw new \RuntimeException('The element not exist');
+        }
+
+        $element = (array) $this->responseContent[$pos];
+        if (!array_key_exists($keyName, $element)) {
+            throw new \RuntimeException('The element not exist');
+        }
+
+        $value = $element[$keyName];
+
+        if ('email' === $type) {
+            if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                throw new \RuntimeException('The value is not an email.');
+            }
+
+            return;
+        }
+
+        $functionType = 'is_'.$type;
+
+        if (!function_exists($functionType)) {
+            throw new \RuntimeException('The type sent not exist');
+        }
+
+        if (!$functionType($value)) {
             throw new \RuntimeException('The value type is not the expected.');
         }
     }
