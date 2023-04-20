@@ -57,3 +57,7 @@ config/Domain/Entity/*~
 .phpunit.result.cache
 .commands
 
+
+###> friends-of-behat/symfony-extension ###
+/behat.yml
+###< friends-of-behat/symfony-extension ###
