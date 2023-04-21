@@ -38,14 +38,10 @@ final class RequestContext implements Context
     {
         $author = $this->databaseContext->getAuthor($email);
 
-        if (!$author) {
-            throw new \RuntimeException('The author not exist');
-        }
-
         $this->bodyRequest = [
             'title' => $table->getHash()[0]['title'],
             'body' => $table->getHash()[0]['body'],
-            'author' => $author->getUuid(),
+            'author' => $author?->getUuid(),
         ];
     }
 
