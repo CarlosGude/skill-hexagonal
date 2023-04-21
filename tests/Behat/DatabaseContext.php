@@ -62,4 +62,20 @@ final class DatabaseContext implements Context
 
         $this->entityManager->flush();
     }
+
+    /**
+     * @Given /^the following user exist:$/
+     */
+    public function theFollowingUserExist(TableNode $table): void
+    {
+        foreach ($table->getHash() as $userData) {
+            $user = new Author();
+            $user->setName($userData['name']);
+            $user->setEmail($userData['email']);
+
+            $this->entityManager->persist($user);
+        }
+
+        $this->entityManager->flush();
+    }
 }

@@ -16,7 +16,7 @@ Feature: Get Articles
     Then the element 0 of response with the key "body" must be an "string"
     Then the element 0 of response with the key "author" must be an "array"
 
-  Scenario: Get an author
+  Scenario: Get an article
     Given the following articles exist:
       | name     | email            | title      | body     |
       | John Doe | john@example.com | Title test | Body test|

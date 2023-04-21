@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Behat;
 
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -21,11 +22,31 @@ final class RequestContext implements Context
 
     /** @var array<string|int, string> */
     private array $responseContent = [];
+    /** @var array<string,string> */
+    private array $bodyRequest = [];
 
     public function __construct(
         private readonly KernelInterface $kernel,
         private readonly DatabaseContext $databaseContext
     ) {
+    }
+
+    /**
+     * @Given /^the user "([^"]*)" wants create an article with this body:$/
+     */
+    public function theUserWantsCreateAnArticleWithThisBody(string $email, TableNode $table): void
+    {
+        $author = $this->databaseContext->getAuthor($email);
+
+        if (!$author) {
+            throw new \RuntimeException('The author not exist');
+        }
+
+        $this->bodyRequest = [
+            'title' => $table->getHash()[0]['title'],
+            'body' => $table->getHash()[0]['body'],
+            'author' => $author->getUuid(),
+        ];
     }
 
     /**
@@ -36,6 +57,18 @@ final class RequestContext implements Context
     public function theDemoScenarioSendsARequestTo(string $path): void
     {
         $this->response = $this->kernel->handle(Request::create($path, 'GET'));
+    }
+
+    /**
+     * @When /^the demo scenario sends a POST request to "([^"]*)" with the given body$/
+     */
+    public function theDemoScenarioSendsAPOSTRequestToWithTheGivenBody(string $path): void
+    {
+        $this->response = $this->kernel->handle(Request::create(
+            uri: $path,
+            method: 'POST',
+            content: (string) json_encode($this->bodyRequest)
+        ));
     }
 
     /**
