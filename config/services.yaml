@@ -19,22 +19,6 @@ services:
             - '../src/Domain/Entity/'
             - '../src/Kernel.php'
 
-    App\Infrastructure\Repository\MySQLArticleRepository:
-        arguments:
-            - $authorRepository: '@App\Infrastructure\Repository\MySQLAuthorRepository'
-
-    App\Application\Articles\UseCase\GetArticleUseCase:
-        arguments:
-            - $articleRepository: '@App\Infrastructure\Repository\MySQLArticleRepository'
-
-    App\Application\Articles\UseCase\PostArticleUseCase:
-        arguments:
-            - $articleRepository: '@App\Infrastructure\Repository\MySQLArticleRepository'
-
-    App\Application\Articles\UseCase\GetAuthorUseCase:
-        arguments:
-            - $authorRepository: '@App\Infrastructure\Repository\MySQLAuthorRepository'
-
     App\Application\Articles\DataTransformer\Input\ArticleDataTransformer:
         public: true
 

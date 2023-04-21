@@ -2,6 +2,7 @@
 
 namespace App\Tests\Behat;
 
+use App\Domain\Entity\Article;
 use App\Domain\Entity\Author;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -14,6 +15,16 @@ final class DatabaseContext implements Context
 {
     public function __construct(private readonly EntityManagerInterface $entityManager)
     {
+    }
+
+    public function getAuthor(string $email): ?Author
+    {
+        return $this->entityManager->getRepository(Author::class)->findOneBy(['email' => $email]);
+    }
+
+    public function getArticle(string $title): ?Article
+    {
+        return $this->entityManager->getRepository(Article::class)->findOneBy(['title' => $title]);
     }
 
     /**
@@ -34,16 +45,19 @@ final class DatabaseContext implements Context
     }
 
     /**
-     * @Given /^the following authors exist:$/
+     * @Given /^the following articles exist:$/
      */
-    public function theFollowingAuthorsExist(TableNode $users): void
+    public function theFollowingArticlesExist(TableNode $table): void
     {
-        foreach ($users->getHash() as $userData) {
+        foreach ($table->getHash() as $userArticleData) {
             $user = new Author();
-            $user->setName($userData['name']);
-            $user->setEmail($userData['email']);
+            $user->setName($userArticleData['name']);
+            $user->setEmail($userArticleData['email']);
+
+            $article = (new Article($user))->setTitle($userArticleData['title'])->setBody($userArticleData['body']);
 
             $this->entityManager->persist($user);
+            $this->entityManager->persist($article);
         }
 
         $this->entityManager->flush();

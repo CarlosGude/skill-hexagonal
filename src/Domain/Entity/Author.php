@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity
  */
-class Author extends AbstractEntity
+final class Author extends AbstractEntity
 {
     /**
      * @ORM\Column(name="emil", type="text", nullable=false)
@@ -28,7 +28,7 @@ class Author extends AbstractEntity
     protected ?string $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Domain\Entity\Article",orphanRemoval=true, mappedBy="author")
+     * @ORM\OneToMany(targetEntity="App\Domain\Entity\Article",orphanRemoval=true, mappedBy="author",cascade={"persist"})
      */
     protected Collection $articles;
 

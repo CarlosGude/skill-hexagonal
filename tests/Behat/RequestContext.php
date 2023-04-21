@@ -23,7 +23,8 @@ final class RequestContext implements Context
     private array $responseContent = [];
 
     public function __construct(
-        private readonly KernelInterface $kernel
+        private readonly KernelInterface $kernel,
+        private readonly DatabaseContext $databaseContext
     ) {
     }
 
@@ -35,6 +36,34 @@ final class RequestContext implements Context
     public function theDemoScenarioSendsARequestTo(string $path): void
     {
         $this->response = $this->kernel->handle(Request::create($path, 'GET'));
+    }
+
+    /**
+     * @When /^the demo scenario sends a request to "([^"]*)" with the uuid of "([^"]*)"$/
+     */
+    public function theDemoScenarioSendsARequestToWithTheUuidOf(string $path, string $email): void
+    {
+        $author = $this->databaseContext->getAuthor($email);
+
+        if (!$author) {
+            throw new \RuntimeException('The author not exist');
+        }
+
+        $this->response = $this->kernel->handle(Request::create($path.'/'.$author->getUuid(), 'GET'));
+    }
+
+    /**
+     * @When /^the demo scenario sends a request to "([^"]*)" with the uuid of the article "([^"]*)"$/
+     */
+    public function theDemoScenarioSendsARequestToWithTheUuidOfTheArticle(string $path, string $title): void
+    {
+        $article = $this->databaseContext->getArticle($title);
+
+        if (!$article) {
+            throw new \RuntimeException('The article not exist');
+        }
+
+        $this->response = $this->kernel->handle(Request::create($path.'/'.$article->getUuid(), 'GET'));
     }
 
     /**
@@ -102,6 +131,14 @@ final class RequestContext implements Context
     {
         $this->theResponseMustContainAKeyCalled($keyName);
 
+        if ('email' === $type) {
+            if (!filter_var($this->responseContent[$keyName], FILTER_VALIDATE_EMAIL)) {
+                throw new \RuntimeException('The value is not an email.');
+            }
+
+            return;
+        }
+
         $functionType = 'is_'.$type;
 
         if (!function_exists($functionType)) {
@@ -134,15 +171,51 @@ final class RequestContext implements Context
     }
 
     /**
+     * @Then /^the element "([^"]*)" of response with the key "([^"]*)" must be an "([^"]*)"$/
      * @Then /^the element (\d+) of response with the key "([^"]*)" must be an "([^"]*)"$/
      */
-    public function theElementOfResponseWithTheKeyMustBeAn(int $pos, string $keyName, string $type): void
+    public function theElementOfResponseWithTheKeyMustBeAn(string|int $pos, string $keyName, string $type): void
     {
         if (!array_key_exists($pos, $this->responseContent)) {
             throw new \RuntimeException('The element not exist');
         }
 
         $element = (array) $this->responseContent[$pos];
+        if (!array_key_exists($keyName, $element)) {
+            throw new \RuntimeException('The element not exist');
+        }
+
+        $value = $element[$keyName];
+
+        if ('email' === $type) {
+            if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                throw new \RuntimeException('The value is not an email.');
+            }
+
+            return;
+        }
+
+        $functionType = 'is_'.$type;
+
+        if (!function_exists($functionType)) {
+            throw new \RuntimeException('The type sent not exist');
+        }
+
+        if (!$functionType($value)) {
+            throw new \RuntimeException('The value type is not the expected.');
+        }
+    }
+
+    /**
+     * @Then /^the first element of "([^"]*)" of response with the key "([^"]*)" must be an "([^"]*)"$/
+     */
+    public function theFirstElementOfOfResponseWithTheKeyMustBeAn(string $pos, string $keyName, string $type): void
+    {
+        if (!array_key_exists($pos, $this->responseContent)) {
+            throw new \RuntimeException('The element not exist');
+        }
+
+        $element = (array) $this->responseContent[$pos][0];
         if (!array_key_exists($keyName, $element)) {
             throw new \RuntimeException('The element not exist');
         }
