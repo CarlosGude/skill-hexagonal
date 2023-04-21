@@ -26,6 +26,6 @@ To install this project, follow these steps:
 
 ## Testing:
 
-The testing of projects follows the same patron, each layer is tested separated, without using a database. Actually, we have 30 tests, and the execution time is lower than a second.
+The testing of projects follows the same patron, each layer is tested separated, without using a database. Actually, we have 30 tests with PHPunit and 8 with behat, and the execution time is lower than two seconds.
 
-In the test with phpunit we use mocks class for the repositories, because the persist is not important if the data validation is correct, the database in this environment is unnecessary but in the behat test we use a memory database (sqlite) who creates in when the test launched and destroy when this finish.
+In the test with phpunit we use mocks class for the repositories, because persist is not important if the data validation is correct, the database in this environment is unnecessary but in the behat test we use a memory database (sqlite) who creates in when the test launched and destroy when this finish.
