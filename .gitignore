@@ -61,3 +61,5 @@ config/Domain/Entity/*~
 ###> friends-of-behat/symfony-extension ###
 /behat.yml
 ###< friends-of-behat/symfony-extension ###
+
+/var/app.db
