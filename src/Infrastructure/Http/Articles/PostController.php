@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 #[Route(name: 'articles_')]
-class PostController extends AbstractController
+final class PostController extends AbstractController
 {
     private Serializer $serializer;
 
@@ -47,8 +47,12 @@ class PostController extends AbstractController
      * )
      */
     #[Route('api/articles', name: 'put_entity_one', methods: ['POST'])]
-    public function post(PostArticleUseCase $articleUseCase, Request $request, bool $persist = true, bool $flush = true): Response
-    {
+    public function post(
+        PostArticleUseCase $articleUseCase,
+        Request $request,
+        bool $persist = true,
+        bool $flush = true
+    ): Response {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
 

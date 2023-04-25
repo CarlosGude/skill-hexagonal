@@ -28,7 +28,12 @@ final class Author extends AbstractEntity
     protected ?string $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Domain\Entity\Article",orphanRemoval=true, mappedBy="author",cascade={"persist"})
+     * @ORM\OneToMany(
+     *     targetEntity="App\Domain\Entity\Article",
+     *     orphanRemoval=true,
+     *     mappedBy="author",
+     *     cascade={"persist"}
+     *     )
      */
     protected Collection $articles;
 
